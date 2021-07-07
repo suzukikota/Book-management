@@ -8,5 +8,7 @@
 </head>
 <body>
 一覧
+<br>
+<a href="BookHome.html" >書籍管理ホームに戻る</a>
 </body>
 </html>

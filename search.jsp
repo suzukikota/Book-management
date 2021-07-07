@@ -13,5 +13,6 @@
 	<input type="text" name="keyword">
 	<input type="submit" value="検索">
 </form>
+<a href="BookHome.html" >書籍管理ホームに戻る</a>
 </body>
 </html>
