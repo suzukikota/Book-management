@@ -8,8 +8,8 @@
 </head>
 <body>
 ログイン画面
-<form action="Mylogin" method="post">
-	<p>社員コード<input type="text" name="id"></p>
+<form action="ManagerLogin" method="post">
+	<p>ID<input type="text" name="id"></p>
 	<p>パスワード<input type="text" name="password"></p>
 	<p><input type="submit" value="送信"></p>
 </form>
