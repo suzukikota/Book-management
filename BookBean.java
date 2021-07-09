@@ -14,20 +14,26 @@ public class BookBean {
 	private String genre;
 	private String publisher;
 	private String status;
+	private String name;
+	private String borrow_date;
 
 	public BookBean() {}
-	public BookBean(String isbn,String title,String genre,String publisher,String status) {
+	public BookBean(String isbn,String title,String genre,String publisher,String status,String name,String borrow_date) {
 		this.isbn=isbn;
 		this.title=title;
 		this.genre=genre;
 		this.publisher=publisher;
 		this.status=status;
+		this.name=name;
+		this.borrow_date=borrow_date;
 	}
 	public String getIsbn() {return isbn;}
 	public String getTitle() {return title;}
 	public String getGenre() {return genre;}
 	public String getPublisher() {return publisher;}
 	public String getStatus() {return status;}
+	public String getName() {return name;}
+	public String getBorrow_date() {return borrow_date;}
 
 	//	検索なし　(閲覧用)書籍一覧の表示用
 	public List<BookBean> BookBeanDBtoList(){
@@ -48,7 +54,7 @@ public class BookBean {
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
 
-				list.add(new BookBean(isbn,title,genre,publisher,status));
+				list.add(new BookBean(isbn,title,genre,publisher,status,name,borrow_date));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -83,7 +89,7 @@ public class BookBean {
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
 
-				list.add(new BookBean(isbn,title,genre,publisher,status));
+				list.add(new BookBean(isbn,title,genre,publisher,status,name,borrow_date));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -117,7 +123,7 @@ public class BookBean {
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
 
-				list.add(new BookBean(isbn,title,genre,publisher,status));
+				list.add(new BookBean(isbn,title,genre,publisher,status,name,borrow_date));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
