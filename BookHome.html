@@ -6,19 +6,29 @@
 <style>
 	body {
 		font-size: 20px;
-		background-color: moccasin;
 		text-align: center;
-}
+			}
 
-			a:hover {
-						font-weight: bold;
+	a:hover {
+			font-weight: bold;
 					}
+
+	p {
+		color: red;
+		}
 </style>
 </head>
 <body>
 	<h1>書籍管理</h1>
-	<a href="search.jsp" >検索</a>
-	<a href="BookList.jsp" >一覧</a>
 	<a href="login.jsp" >管理者ログイン</a>
+
+	<p>※会社経費による書籍購入には会社の決済承認が必要です
+	<p>※経費での書籍購入者は、書籍名等を正確に総務部へ報告してください
+
+<form action="#" method="post">
+	検索するキーワードを入力してください<br>
+	<input type="text" name="keyword">
+	<input type="submit" value="検索">
+</form>
 </body>
 </html>
