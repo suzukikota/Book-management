@@ -122,6 +122,8 @@ public class BookBean {
 				String genre = rs.getString("genre");
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
+				String name = rs.getString("name");
+				String borrow_date = rs.getString("borrow_date");
 
 				list.add(new BookBean(isbn,title,genre,publisher,status,name,borrow_date));
 			}
