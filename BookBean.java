@@ -44,11 +44,12 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn";
 
 			ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
+				String isbn = rs.getString("isbn");
 				String title = rs.getString("title");
 				String genre = rs.getString("genre");
 				String publisher = rs.getString("publisher");
@@ -79,11 +80,12 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where title like ?";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where title like ?";
 			ps = con.prepareStatement(sql.toString());
 			ps.setString(1,("%" + keyword + "%"));
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
+				String isbn = rs.getString("isbn");
 				String title = rs.getString("title");
 				String genre = rs.getString("genre");
 				String publisher = rs.getString("publisher");
@@ -113,11 +115,12 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.title,book.genre,book.publisher,borrow.status,employee_info.name,borrow.borrow_date from borrow join employee_info on borrow.employee_id = employee_info.employee_id join book on borrow.isbn = book.isbn;";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,employee_info.name,borrow.borrow_date from borrow join employee_info on borrow.employee_id = employee_info.employee_id join book on borrow.isbn = book.isbn;";
 
 			ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
+				String isbn = rs.getString("isbn");
 				String title = rs.getString("title");
 				String genre = rs.getString("genre");
 				String publisher = rs.getString("publisher");
