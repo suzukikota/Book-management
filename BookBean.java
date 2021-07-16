@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import org.mariadb.jdbc.Driver;
+
 public class BookBean {
 	private String isbn;
 	private String title;
@@ -14,6 +15,7 @@ public class BookBean {
 	private String status;
 	private String rental;
 	private String borrow_date;
+
 	public BookBean() {}
 	public BookBean(String isbn,String title,String genre,String publisher,String status,String rental,String borrow_date) {
 		this.isbn=isbn;
@@ -31,6 +33,7 @@ public class BookBean {
 	public String getStatus() {return status;}
 	public String getRental() {return rental;}
 	public String getBorrow_date() {return borrow_date;}
+
 	//	検索なし　(閲覧用)書籍一覧の表示用
 	public List<BookBean> BookBeanDBtoList(){
 		List<BookBean> list = new ArrayList<BookBean>();
@@ -39,7 +42,6 @@ public class BookBean {
 		try {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
-
 
 			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn";
 
@@ -51,6 +53,7 @@ public class BookBean {
 				String genre = rs.getString("genre");
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
+
 				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date));
 			}
 		}catch (Exception e) {
@@ -65,6 +68,7 @@ public class BookBean {
 		}
 		return list;
 	}
+
 	//	検索あり　検索にヒットする書籍一覧表示用
 	//	引数にkeyword
 	public List<BookBean> BookBeanDBtoList2(String keyword){
@@ -85,6 +89,7 @@ public class BookBean {
 				String genre = rs.getString("genre");
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
+
 				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date));
 			}
 		}catch (Exception e) {
@@ -99,6 +104,7 @@ public class BookBean {
 		}
 		return list;
 	}
+
 	//		(管理用)書籍一覧の表示用
 	@SuppressWarnings("resource")
 	public List<BookBean> BookBeanDBtoList3(String btn, String selectId, String selectIsbn, String selectTitle,String selectGenre, String selectPublisher, String selectStatus, String selectRental, String selectBorrow_date){
@@ -163,7 +169,42 @@ public class BookBean {
 				String rental = rs.getString("rental");
 				String borrow_date = rs.getString("borrow_date");
 
+
 				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+
+		}finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+
+
+	//	レンタル申請画面へ遷移した際の、書籍番号と書籍名を取得するメソッド
+	public List<BookBean> Rental(String isbn){
+		List<BookBean> list = new ArrayList<BookBean>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select isbn,title from book where isbn = ?";
+			ps = con.prepareStatement(sql.toString());
+			ps.setString(1,isbn);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String Isbn = rs.getString("isbn");
+				String title = rs.getString("title");
+				list.add(new BookBean(Isbn,title,genre,publisher,status,rental,borrow_date));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
