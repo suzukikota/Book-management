@@ -1,17 +1,14 @@
 package bean;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.mariadb.jdbc.Driver;
 
-
 public class Employee_InfoBean {
-	private static final List<Employee_InfoBean> answer = null;
+
 	private String employee_id;
 	private String name;
 
@@ -24,7 +21,8 @@ public class Employee_InfoBean {
 	public String getEmployee_id() {return employee_id;}
 	public String getName() {return name;}
 
-	public List<Employee_InfoBean> Employee_InfoDBtoList(String selectEmployee_id,String selectName){
+	@SuppressWarnings("resource")
+	public List<Employee_InfoBean> Employee_InfoDBtoList(String selectId,String id, String names, String btn){
 		List<Employee_InfoBean> list = new ArrayList<Employee_InfoBean>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -32,11 +30,28 @@ public class Employee_InfoBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-
-			String sql ="select * from employee_info where employee_id = ? and name = ?";
+			String sql ="select * from employee_info order by cast(employee_id as int)";
 			ps = con.prepareStatement(sql.toString());
-			ps.setString(1,selectEmployee_id);
-			ps.setString(2,selectName);
+
+
+
+			if(btn.equals("delete")) {
+				sql = "delete from employee_info where employee_id = ? ";
+				ps = con.prepareStatement(sql.toString());
+				ps.setString(1, selectId);
+				ps.executeUpdate();
+			}
+
+			if(btn.equals("’Ç‰Á")) {
+				sql = "insert into employee_info (employee_id,name) values (?, ?)"; // ’Ç‰Á
+				ps = con.prepareStatement(sql.toString());
+				ps.setString(1, id);
+				ps.setString(2, names);
+				ps.executeUpdate();
+			}
+
+			sql ="select * from employee_info order by cast(employee_id as int)";
+			ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {

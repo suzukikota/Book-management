@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+
 <body>
 ログイン画面
 <form action="ManagerLogin" method="post">
@@ -13,6 +14,8 @@
 	<p>パスワード<br><input type="text" name="password"></p>
 	<p><input type="submit" value="送信"></p>
 </form>
-<a href="BookHome.html" >書籍管理ホームに戻る</a>
+
+<a href="BookHome.html" >書籍一覧</a>
+
 </body>
 </html>
