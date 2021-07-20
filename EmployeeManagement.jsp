@@ -10,6 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>社員管理</title>
 </head>
 <body>
@@ -24,8 +25,8 @@
 		}
 %>
 <form action="#" method="POST">
-	<p>社員番号<br><input type="text" name="employee_id"></p>
-	<p>氏名<br><input type="text" name="name"></p>
+	<p>社員番号<br><input type="text" name="employee_id" required></p>
+	<p>氏名<br><input type="text" name="name" required></p>
 	<p><input type="submit" name ="btn" value="追加"></p>
 </form>
 <br>
@@ -55,7 +56,7 @@ obj = list.get(i);	// get()メソッドでArrayListから1件データを取出�
  </table>
 
  <br>
-<a href="BookHome.html" >書籍一覧</a>
+<a href="BookHome.jsp" >書籍一覧</a>
 <a href="BookManagement.jsp" >書籍管理</a>
 
 </body>

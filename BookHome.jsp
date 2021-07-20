@@ -9,6 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>書籍管理ホーム</title>
 <style>
 	body {
@@ -16,20 +17,16 @@
 		text-align: center;
 		background-color:#ADD8E6;
 			}
-
 	a:hover {
 			font-weight: bold;
 					}
-
 	p {
 		color: red;
 		}
-
 	.search{
 		padding:0.5em 1em;
 		margin:2em;
 		}
-
 	table{
 		height:50px;
 		table-layout:fixed;
@@ -61,7 +58,6 @@
 		right:150px;
 		top:40px;
 		}
-
 </style>
 </head>
 

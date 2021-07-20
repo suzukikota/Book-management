@@ -10,73 +10,62 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>書籍管理</title>
 </head>
 <body>
 
 <form action="#" method="POST">
 <div style="display:inline-flex">
-    <p>図書番号<br><input type="text" name="isbn"></p>
-	<p>書籍名<br><input type="text" name="title"></p>
-	<p>ジャンル<br><input type="text" name="genre"></p>
-	<p>出版社<br><input type="text" name="publisher"></p>
+    <p>図書番号<br><input type="text" name="isbn" required></p>
+	<p>書籍名<br><input type="text" name="title" required></p>
+	<p>ジャンル<br><input type="text" name="genre" required></p>
+	<p>出版社<br><input type="text" name="publisher" required></p>
 	<p>ステータス<br><select name="status">
 		<option value="レンタル中">レンタル中</option>
 		<option value="レンタル可">レンタル可</option>
 	</select></p>
 	</div>
 	<div style="display:inline-flex">
-	<p>借用者<br><input type="text" name="rental"></p>
-	<p>レンタル日<br><input type="text" name="borrow_date"></p>
+	<p>借用者<br><input type="text" name="rental" required></p>
+	<p>レンタル日<br><input type="text" name="borrow_date" required></p>
 		</div>
 			<br>
 	<input type="submit" name ="btn" value="追加">
 
 	<br>
 	<br>
-	<!-- <input type="submit" name="btn" value="ステータス">
-	<input type="submit" name="btn" value="ジャンル">
-	<input type="submit" name="btn" value="書籍名"> -->
+
 </form>
 
 <%	String isbn = request.getParameter("isbn");
 		if(isbn == null){
 			isbn = "";
 		}
-		out.println(isbn);
-
 	String title = request.getParameter("title");
 		if(title == null){
 			title = "";
 		}
-				out.println(title);
 	String genre = request.getParameter("genre");
 		if(genre == null){
 			genre = "";
 		}
-				out.println(genre);
 	String publisher = request.getParameter("publisher");
 		if(publisher == null){
 			publisher = "";
 		}
-				out.println(publisher);
 	String status = request.getParameter("status");
 		if(status == null){
 			status = "";
 		}
-				out.println(status);
 	String rental = request.getParameter("rental");
 		if(rental == null){
 			rental = "";
 		}
-				out.println(rental);
 	String borrow_date = request.getParameter("borrow_date");
 		if(borrow_date == null){
 			borrow_date = "";
 		}
-		out.println(borrow_date);
-
-
 %>
 
 <br>
@@ -118,7 +107,7 @@ obj = list.get(i);	// get()メソッドでArrayListから1件データを取出�
    </tr>
  </table>
  <br>
-<a href="BookHome.html" >書籍一覧</a>
+<a href="BookHome.jsp" >書籍一覧</a>
 <a href="EmployeeManagement.jsp" >社員管理</a>
 
 </body>
