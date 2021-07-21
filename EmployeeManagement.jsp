@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+  <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <%@ page import="bean.*" %>
@@ -14,17 +14,21 @@
 <title>社員管理</title>
 </head>
 <body>
+<a href="BookHome.jsp" >閲覧用書籍一覧</a>
+<a href="oklogin.jsp" >書籍管理</a>
+
 <%	String employee_id = request.getParameter("employee_id");
 		if(employee_id == null){
 			employee_id = "";
 		}
-
 	String name = request.getParameter("name");
 		if(name ==null){
 			name = "";
 		}
 %>
 <form action="#" method="POST">
+	<p>社員番号<br><input type="text" name="employee_id"></p>
+	<p>氏名<br><input type="text" name="name"></p>
 	<p>社員番号<br><input type="text" name="employee_id" required></p>
 	<p>氏名<br><input type="text" name="name" required></p>
 	<p><input type="submit" name ="btn" value="追加"></p>
@@ -42,7 +46,6 @@ String btn = request.getParameter("btn");
 if(btn == null){
 	btn = "";
 }
-
 List<Employee_InfoBean> list = obj.Employee_InfoDBtoList(request.getParameter("linkEmployee_id"),request.getParameter("employee_id"), request.getParameter("name"), btn);
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BeanAccessDBクラスのオブジェクトに入れる
@@ -56,8 +59,6 @@ obj = list.get(i);	// get()メソッドでArrayListから1件データを取出�
  </table>
 
  <br>
-<a href="BookHome.jsp" >書籍一覧</a>
-<a href="BookManagement.jsp" >書籍管理</a>
+
 
 </body>
-</html>
