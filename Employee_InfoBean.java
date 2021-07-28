@@ -42,8 +42,8 @@ public class Employee_InfoBean {
 				ps.executeUpdate();
 			}
 
-			if(btn.equals("�ǉ�")) {
-				sql = "insert into employee_info (employee_id,name) values (?, ?)"; // �ǉ�
+			if(btn.equals("’Ç‰Á")) {
+				sql = "insert into employee_info (employee_id,name) values (?, ?)"; // ’Ç‰Á
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, id);
 				ps.setString(2, names);
@@ -74,6 +74,37 @@ public class Employee_InfoBean {
 			}
 		}
 		return list;
+	}
+	//	レンタルと返却申請の際の、社員id,nameの取得
+	public List<Employee_InfoBean> Employee_InfoDBtoList2(){
+		List<Employee_InfoBean> list2 =new ArrayList<Employee_InfoBean>();
+		Connection con = null;
+		PreparedStatement pS = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select * from employee_info order by name;";
+
+			pS=con.prepareStatement(sql.toString());
+			ResultSet rs = pS.executeQuery();
+			while(rs.next()) {
+				String employee_id = rs.getString("employee_id");
+				String name = rs.getString("name");
+
+				list2.add(new Employee_InfoBean(employee_id,name));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pS !=null) {pS.close();}
+				if(con !=null) {con.close();}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list2;
 	}
 
 }
