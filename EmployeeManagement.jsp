@@ -12,6 +12,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>社員管理</title>
+<style>
+body {
+
+		background-color:#ADD8E6;
+			}
+	a:hover {
+			font-weight: bold;
+			}
+	table{
+		height:50px;
+		table-layout:fixed;
+		background:#FFF;
+		border-radius:10px;
+		border:solid 3px #6091d3;
+		}
+/* 	削除ボタンの装飾 */
+	button{
+		display:inline-block;
+		padding:0.5em 1em;
+		text-decoration:none;
+		background:#668ad8;
+		color:#FFF;
+		border-bottom:solid 4px #627295;
+		border-radius:3px;
+		}
+</style>
 </head>
 <body>
 <a href="BookHome.jsp" >閲覧用書籍一覧</a>
@@ -35,7 +61,7 @@
 </form>
 <br>
 <br>
-<table border="1" width="30%">
+<table class="table" border="1" width="30%">
  <tr>
       <th width="5%">社員番号</th>
       <th width="20%">氏名</th>

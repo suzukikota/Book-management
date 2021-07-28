@@ -10,6 +10,33 @@
 <head>
 <meta charset="UTF-8">
 <title>書籍管理</title>
+<style>
+	body {
+
+		background-color:#ADD8E6;
+			}
+	a:hover {
+			font-weight: bold;
+			}
+	table{
+		height:50px;
+		table-layout:fixed;
+		width:1200px;
+		background:#FFF;
+		border-radius:10px;
+		border:solid 3px #6091d3;
+		}
+/* 	削除ボタンの装飾 */
+	button{
+		display:inline-block;
+		padding:0.5em 1em;
+		text-decoration:none;
+		background:#668ad8;
+		color:#FFF;
+		border-bottom:solid 4px #627295;
+		border-radius:3px;
+		}
+</style>
 </head>
 <body>
 <a href="BookHome.jsp" >閲覧用書籍一覧</a>
@@ -46,37 +73,28 @@
 		if(isbn == null){
 			isbn = "";
 		}
-		out.println(isbn);
 	String title = request.getParameter("title");
 		if(title == null){
 			title = "";
 		}
-				out.println(title);
 	String genre = request.getParameter("genre");
 		if(genre == null){
 			genre = "";
 		}
-				out.println(genre);
 	String publisher = request.getParameter("publisher");
 		if(publisher == null){
-			publisher = "";
 		}
-				out.println(publisher);
 	String status = request.getParameter("status");
 		if(status == null){
-			status = "";
 		}
-				out.println(status);
 	String rental = request.getParameter("rental");
 		if(rental == null){
 			rental = "";
 		}
-				out.println(rental);
 	String borrow_date = request.getParameter("borrow_date");
 		if(borrow_date == null){
 			borrow_date = "";
 		}
-		out.println(borrow_date);
 %>
 
 <br>
@@ -85,7 +103,7 @@ String btn = request.getParameter("btn");
 if(btn == null){
 	btn = "";
 }%>
-<table border="1" width="100%">
+<table class="table" border="1" width="100%">
  <tr>
       <th width="15%">ISBN</th>
       <th width="30%">書籍名</th>
