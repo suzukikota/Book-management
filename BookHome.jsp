@@ -15,7 +15,7 @@
 	body {
 		font-size: 20px;
 		text-align: center;
-		background-color:#ADD8E6;
+  		background-color:#add8e6;
 			}
 	a:hover {
 			font-weight: bold;
@@ -24,8 +24,13 @@
 		color: red;
 		}
 	.search{
-		padding:0.5em 1em;
-		margin:2em;
+		padding:0.2em;
+		margin:0.2em;
+		}
+	.search2{
+		background:#668ad8;
+		color:#FFF;
+		border-bottom:solid 4px #627295;
 		}
 	table{
 		height:50px;
@@ -47,6 +52,18 @@
 		}
 /* 	返却ボタンの装飾 */
 	.btn-square2{
+ 		display:inline-block;
+ 		padding:0.5em 1em;
+ 		text-decoration:none;
+ 		background:#FFA07A;
+ 		color:#FFF;
+ 		border-bottom:solid 4px #627295;
+ 		border-radius:3px;
+		padding:0.5em 1em;
+ 		margin:1em 0.5em;
+ 		}
+/* 	管理者ログインの装飾 */
+	.btn-square3{
 		display:inline-block;
 		padding:0.5em 1em;
 		text-decoration:none;
@@ -56,23 +73,27 @@
 		border-radius:3px;
 		position:absolute;
 		right:150px;
-		top:40px;
+ 		top:40px;
 		}
+
 </style>
 </head>
 
 <body>
-	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
+
 	<h1>書籍管理</h1>
-	<a href="login.jsp" >管理者ログイン</a>
+	<button class="btn-square3" onclick="location.href='login.jsp'" >管理者ログイン</button>
 
 	<p>※会社経費による書籍購入には会社の決済承認が必要です
-	<p>※経費での書籍購入者は、書籍名等を正確に総務部へ報告してください
+	<p>※経費での書籍購入者は、書籍名等を正確に総務部へ報告してください<br>
 
-<form class="search"action="#" method="post">
+
+	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
+
+<form class="search" action="#" method="post">
 	検索するキーワードを入力してください<br>
 	<input type="text" name="keyword">
-	<input type="submit" value="検索">
+	<input class="search2" type="submit" value="🔍 検索">
 </form>
 
 	<%String keyword = request.getParameter("keyword");%>
@@ -80,6 +101,7 @@
 
 
 		<br>検索結果一覧
+
 		<table border="1" align="center" >
 			<tr>
 				<th>書籍番号</th>
@@ -87,7 +109,7 @@
 				<th>ジャンル</th>
 				<th>出版社</th>
 				<th>ステータス</th>
-				<th>申請に進む</th>
+				<th>申請</th>
 			</tr>
 		</table>
 
@@ -124,7 +146,7 @@
 				<th>ジャンル</th>
 				<th>出版社</th>
 				<th>ステータス</th>
-				<th>申請に進む</th>
+				<th>申請</th>
 			</tr>
 		</table>
 
@@ -151,9 +173,5 @@
 		</table>
 			<%}
 		}%>
-
-
-
-
 </body>
 </html>
