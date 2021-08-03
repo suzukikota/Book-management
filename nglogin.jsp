@@ -13,22 +13,33 @@
 	body {
 
 		background-color:#ADD8E6;
+		text-align:center;
 			}
 	a:hover {
 			font-weight: bold;
 			}
+	/* 	リンクボタンの装飾 */
+	button{
+		display:inline-block;
+		padding:0.5em 1em;
+		text-decoration:none;
+		background:#668ad8;
+		color:#FFF;
+		border-bottom:solid 4px #627295;
+		border-radius:3px;
+		}
 </style>
 </head>
 <body>
 <h1>入力内容に誤りがあります。</h1>
 <h1>もう一度入力してください。</h1>
 <form action="ManagerLogin" method="post">
-	<p>ID<br><input type="text" name="id"></p>
-	<p>パスワード<br><input type="text" name="password"></p>
+	<p>ID<br><input type="text" name="id" required></p>
+	<p>パスワード<br><input type="text" name="password" required></p>
 	<p><input type="submit" value="送信"></p>
 </form>
 
-<a href="BookHome.jsp" >書籍一覧</a>
+<button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 <br>
 </body>
 </html>

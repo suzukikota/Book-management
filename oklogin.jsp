@@ -5,6 +5,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.URLEncoder" %>
 <jsp:useBean id="obj" class="bean.BookBean"/>
+<jsp:useBean id="obj2" class="bean.Employee_InfoBean"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,7 @@
 	body {
 
 		background-color:#ADD8E6;
+
 			}
 	a:hover {
 			font-weight: bold;
@@ -25,6 +27,7 @@
 		background:#FFF;
 		border-radius:10px;
 		border:solid 3px #6091d3;
+		
 		}
 /* 	削除ボタンの装飾 */
 	button{
@@ -36,17 +39,14 @@
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		}
+
 </style>
 </head>
 <body>
-<a href="BookHome.jsp" >閲覧用書籍一覧</a>
-<a href="EmployeeManagement.jsp" >社員管理</a>
+<button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
+<button onclick="location.href='EmployeeManagement.jsp'">社員管理</button>
 <form action="#" method="POST">
 <div style="display:inline-flex">
-    <p>図書番号<br><input type="text" name="isbn"></p>
-	<p>書籍名<br><input type="text" name="title"></p>
-	<p>ジャンル<br><input type="text" name="genre"></p>
-	<p>出版社<br><input type="text" name="publisher"></p>
     <p>図書番号<br><input type="text" name="isbn" required></p>
 	<p>書籍名<br><input type="text" name="title" required></p>
 	<p>ジャンル<br><input type="text" name="genre" required></p>
@@ -57,9 +57,17 @@
 	</select></p>
 	</div>
 	<div style="display:inline-flex">
-	<p>借用者<br><input type="text" name="rental"></p>
-	<p>レンタル日<br><input type="text" name="borrow_date"></p>
-	<p>借用者<br><input type="text" name="rental" required></p>
+	<p>借用者<br><select name="employee">
+		<%List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
+			for(int j=0;j<list2.size();j++){
+				obj2=list2.get(j);%>
+				<%=obj2.getName() %>
+
+			<option value=<%=obj2.getName()%>><%=obj2.getName()%></option>
+			<%} %>
+		</select></p>
+
+<!-- 	<p>借用者<br><input type="text" name="rental" required></p> -->
 	<p>レンタル日<br><input type="text" name="borrow_date" required></p>
 		</div>
 			<br>
@@ -87,9 +95,9 @@
 	String status = request.getParameter("status");
 		if(status == null){
 		}
-	String rental = request.getParameter("rental");
-		if(rental == null){
-			rental = "";
+	String employee = request.getParameter("employee");
+		if(employee == null){
+			employee = "";
 		}
 	String borrow_date = request.getParameter("borrow_date");
 		if(borrow_date == null){
@@ -115,7 +123,7 @@ if(btn == null){
       <th width="5%">削除</th>
  </tr>
 <%
-List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkId"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("rental"),request.getParameter("borrow_date"));
+List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkId"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"));
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BeanAccessDBクラスのオブジェクトに入れる
 %>
@@ -127,7 +135,7 @@ obj = list.get(i);	// get()メソッドでArrayListから1件データを取出�
       <td><%= obj.getStatus() %></td>
       <td><%= obj.getRental() %></td>
       <td><%= obj.getBorrow_date() %></td>
-      <td><button onclick="location.href='BookManagement.jsp?linkId=<%= obj.getIsbn() %>&btn=delete'">削除</button></td>
+      <td><button onclick="location.href='oklogin.jsp?linkId=<%= obj.getIsbn() %>&btn=delete'">削除</button></td>
 <% } %>
    </tr>
  </table>

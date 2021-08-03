@@ -13,9 +13,14 @@
 <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>社員管理</title>
 <style>
-body {
+	body {
 
 		background-color:#ADD8E6;
+		text-align:center;
+			}
+	table{
+		margin-left: auto;
+  	    margin-right: auto;/*中央揃え*/
 			}
 	a:hover {
 			font-weight: bold;
@@ -37,11 +42,12 @@ body {
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		}
+
 </style>
 </head>
 <body>
-<a href="BookHome.jsp" >閲覧用書籍一覧</a>
-<a href="oklogin.jsp" >書籍管理</a>
+<button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
+<button onclick="location.href='oklogin.jsp'">書籍管理</button>
 
 <%	String employee_id = request.getParameter("employee_id");
 		if(employee_id == null){
@@ -53,8 +59,6 @@ body {
 		}
 %>
 <form action="#" method="POST">
-	<p>社員番号<br><input type="text" name="employee_id"></p>
-	<p>氏名<br><input type="text" name="name"></p>
 	<p>社員番号<br><input type="text" name="employee_id" required></p>
 	<p>氏名<br><input type="text" name="name" required></p>
 	<p><input type="submit" name ="btn" value="追加"></p>
