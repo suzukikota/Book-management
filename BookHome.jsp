@@ -12,32 +12,52 @@
 <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>書籍管理ホーム</title>
 <style>
+	header{
+		width:100%;
+		padding:10px 10px;
+ 		background-color:#ADD8E6;
+		color:#fff;
+		font-family: 'Noto Sans JP', sans-serif;
+	}
 	body {
-		font-size: 20px;
+		margin:0;
+		padding:0;
+		font-size: 17px;
 		text-align: center;
-  		background-color:#add8e6;
+  		background-color:#ADD8E6;
+  		background-image:url(images/library-1082309.jpg);
+  		background-size:contain;
+  		background-attachment: fixed;
+		font-family: 'Noto Sans JP', sans-serif;
 			}
-	a:hover {
-			font-weight: bold;
-					}
+	button:hover {
+			border-bottom-color:transparent;
+			transform:translateY(0.1em);
+				}
 	p {
 		color: red;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
 	.search{
-		padding:0.2em;
-		margin:0.2em;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
 	.search2{
+		height:28px;
 		background:#668ad8;
 		color:#FFF;
-		border-bottom:solid 4px #627295;
+		border-bottom:solid 2px #627295;
+		font-family: 'Noto Sans JP', sans-serif;
+		}
+	.search2:hover{
+		border-bottom-color:transparent;
+		transform: translateY(0.1em);
 		}
 	table{
-		height:50px;
+		height:40px;
 		table-layout:fixed;
-		width:1200px;
-		background:#FFF;
-		border-radius:10px;
+		width:1100px;
+		background-color:#FFF;
+		border-radius:5px;
 		border:solid 3px #6091d3;
 		}
 /* 	申請ボタンの装飾 */
@@ -45,62 +65,66 @@
 		display:inline-block;
 		padding:0.5em 1em;
 		text-decoration:none;
-		background:#668ad8;
+		background-color:#668ad8;
 		color:#FFF;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
 /* 	返却ボタンの装飾 */
 	.btn-square2{
  		display:inline-block;
  		padding:0.5em 1em;
  		text-decoration:none;
- 		background:#FFA07A;
+ 		background-color:#FFA07A;
  		color:#FFF;
  		border-bottom:solid 4px #627295;
  		border-radius:3px;
 		padding:0.5em 1em;
  		margin:1em 0.5em;
+		font-family: 'Noto Sans JP', sans-serif;
  		}
 /* 	管理者ログインの装飾 */
 	.btn-square3{
 		display:inline-block;
 		padding:0.5em 1em;
 		text-decoration:none;
-		background:#FFA07A;
+		background-color:#FFA07A;
 		color:#FFF;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		position:absolute;
 		right:150px;
- 		top:40px;
+ 		top:34px;
+ 		font-family: 'Noto Sans JP', sans-serif;
 		}
-
 </style>
 </head>
 
 <body>
-
-	<h1>書籍管理</h1>
+<header>
+	<h1>さくら書籍管理</h1>
 	<button class="btn-square3" onclick="location.href='login.jsp'" >管理者ログイン</button>
+
 
 	<p>※会社経費による書籍購入には会社の決済承認が必要です
 	<p>※経費での書籍購入者は、書籍名等を正確に総務部へ報告してください<br>
-
+</header>
 
 	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
 
 <form class="search" action="#" method="post">
-	検索するキーワードを入力してください<br>
-	<input type="text" name="keyword">
+<!-- 	書籍名の検索<br> -->
+	<br>
+	<input type="text" name="keyword" placeholder="書籍名の検索" style="width:300px; height:23px;">
 	<input class="search2" type="submit" value="🔍 検索">
 </form>
 
 	<%String keyword = request.getParameter("keyword");%>
 	<%if(keyword!=null){%>
 
-
-		<br>検索結果一覧
+		<br>
+<!-- 		<br>検索結果一覧 -->
 
 		<table border="1" align="center" >
 			<tr>
@@ -120,7 +144,7 @@
 
 				<tr>
 					<td><%=obj.getIsbn() %></td>
-					<td><%=obj.getTitle() %></td>
+					<td ><%=obj.getTitle() %></td>
 					<td><%=obj.getGenre() %></td>
 					<td><%=obj.getPublisher() %></td>
 					<td><%=obj.getStatus() %></td>
@@ -137,8 +161,6 @@
 		<%}else if(keyword==null){%>
 			<br>
 
-				書籍一覧
-
 		<table class="table" border="1" align="center" >
 			<tr>
 				<th>書籍番号</th>
@@ -153,9 +175,7 @@
 		<%List<BookBean> list = obj.BookBeanDBtoList();
 			for(int i=0;i<list.size();i++){
 				obj = list.get(i);%>
-
-		<table class="table" border="1" align="center" >
-
+			<table class="table" border="1" align="center" >
 			<tr>
 				<td><%=obj.getIsbn() %></td>
 				<td><%=obj.getTitle() %></td>
@@ -170,8 +190,9 @@
 				<%} %>
 			</tr>
 			<br>
-		</table>
-			<%}
-		}%>
+			<%}%>
+			</table>
+		<%}%>
+
 </body>
 </html>

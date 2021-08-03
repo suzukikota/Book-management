@@ -14,9 +14,10 @@
 <title>返却の承認</title>
 <style>
 	body{
-		font-size: 20px;
+		font-size: 17px;
 		text-align: center;
 		background-color:#ADD8E6;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
 	.return{
 		padding: 0.5em 1em;
@@ -32,15 +33,15 @@
 				  translateY(-50%);
 
 	}
-	.btn-square{
-		display:inline-block;
-		padding:0.5em 1em;
-		text-decoration:none;
-		background:#668ad8;
-		color:#FFF;
-		border-bottom:solid 4px #627295;
-		border-radius:3px;
-		}
+/* 	.btn-square{ */
+/* 		display:inline-block; */
+/* 		padding:0.5em 1em; */
+/* 		text-decoration:none; */
+/* 		background:#668ad8; */
+/* 		color:#FFF; */
+/* 		border-bottom:solid 4px #627295; */
+/* 		border-radius:3px; */
+/* 		} */
 	.btn-square2{
 		display:inline-block;
 		padding:0.5em 1em;
@@ -49,8 +50,12 @@
 		color:#FFF;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
-
+	.btn-square2:hover{
+		border-bottom-color:transparent;
+		transform: translateY(0.1em);
+		}
 </style>
 </head>
 <body>

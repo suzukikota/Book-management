@@ -14,7 +14,7 @@
 <title>返却申請ページ</title>
 <style>
 	body{
-		font-size: 20px;
+		font-size: 17px;
 		text-align: center;
 		background-color:#ADD8E6;
 		}
@@ -40,6 +40,11 @@
 		color:#FFF;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
+		}
+	.btn-square:hover{
+		border-bottom-color:transparent;
+		transform: translateY(0.1em);
 		}
 	.btn-square2{
 		display:inline-block;
@@ -49,8 +54,12 @@
 		color:#FFF;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
-
+	.btn-square2:hover{
+		border-bottom-color:transparent;
+		transform: translateY(0.1em);
+		}
 </style>
 </head>
 <body>

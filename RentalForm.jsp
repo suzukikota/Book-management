@@ -15,10 +15,10 @@
 <style>
 	/* 	body全体の装飾 */
 	body{
-		font-size: 20px;
+		font-size: 17px;
 		text-align: center;
 		background-color:#ADD8E6;
-
+		font-family: 'Noto Sans JP', sans-serif;
 	}
 	/* 	レンタルフォームの装飾 */
 	.rental{
@@ -29,7 +29,7 @@
 		border:solid 3px #6091d3;
 		border-radius:10px;
 
-/* 		位置を中心にする */
+/* 		フォームの位置を中心にする */
 		position:fixed;
 		left:50%;
 		top:50%;
@@ -46,6 +46,11 @@
 		color:#FFF;
 		border^bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
+		}
+	.btn-square:hover{
+		border-bottom-color:transparent;
+		transform: translateY(0.1em);
 		}
 
 </style>
