@@ -24,9 +24,8 @@
 		padding:0;
 		font-size: 17px;
 		text-align: center;
-  		background-color:#ADD8E6;
   		background-image:url(images/library-1082309.jpg);
-  		background-size:contain;
+  		background-size:cover;
   		background-attachment: fixed;
 		font-family: 'Noto Sans JP', sans-serif;
 			}
@@ -57,7 +56,7 @@
 	table{
 		height:40px;
 		table-layout:fixed;
-		width:1100px;
+		width:80%;
 		margin-left:auto;
 		margin-right:auto;
 		background-color:#FFF;
@@ -133,11 +132,11 @@
 		<table border="1">
 			<tr>
 				<th>書籍番号</th>
-				<th>書籍名</th>
+				<th width = 32%>書籍名</th>
 				<th>ジャンル</th>
 				<th>出版社</th>
-				<th>ステータス</th>
-				<th>申請</th>
+				<th width = 10%>ステータス</th>
+				<th width = 8%>申請</th>
 			</tr>
 		</table>
 
@@ -145,21 +144,20 @@
 		for(int i=0;i<list.size();i++){
 			obj = list.get(i);%>
 			<table border="1">
-
 				<tr>
-					<td><%=obj.getIsbn() %></td>
-					<td><%=obj.getTitle() %></td>
-					<td><%=obj.getGenre() %></td>
-					<td><%=obj.getPublisher() %></td>
-					<td><%=obj.getStatus() %></td>
-					<%String status=obj.getStatus(); %>
-					<%if(status.contains("レンタル可")){ %>
-					<td><button onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'" class="btn-square">申請</button>
-					<%}else{ %>
-				<td>申請不可</td>
+				<td><%=obj.getIsbn() %></td>
+				<td width = 32%><%=obj.getTitle() %></td>
+				<td><%=obj.getGenre() %></td>
+				<td><%=obj.getPublisher() %></td>
+				<td width = 10%><%=obj.getStatus() %></td>
+				<%String status=obj.getStatus(); %>
+				<%if(status.contains("レンタル可")){ %>
+				<td width = 8%><button onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'" class="btn-square">申請</button>
+				<%}else{ %>
+				<td width = 8%>申請不可</td>
 				<%} %>
 				</tr>
-
+				<br>
 			</table>
 			<%} %>
 		<%}else if(keyword==null){%>
@@ -168,11 +166,11 @@
 		<table class="table" border="1">
 			<tr>
 				<th>書籍番号</th>
-				<th>書籍名</th>
+				<th width = 32%>書籍名</th>
 				<th>ジャンル</th>
 				<th>出版社</th>
-				<th>ステータス</th>
-				<th>申請</th>
+				<th width = 10%>ステータス</th>
+				<th width = 8%>申請</th>
 			</tr>
 		</table>
 
@@ -182,20 +180,20 @@
 			<table class="table" border="1">
 			<tr>
 				<td><%=obj.getIsbn() %></td>
-				<td><%=obj.getTitle() %></td>
+				<td width = 32%><%=obj.getTitle() %></td>
 				<td><%=obj.getGenre() %></td>
 				<td><%=obj.getPublisher() %></td>
-				<td><%=obj.getStatus() %></td>
+				<td width = 10%><%=obj.getStatus() %></td>
 				<%String status=obj.getStatus(); %>
 				<%if(status.contains("レンタル可")){ %>
-				<td><button onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'" class="btn-square">申請</button>
+				<td width = 8%><button onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'" class="btn-square">申請</button>
 				<%}else{ %>
-				<td>申請不可</td>
+				<td width = 8%>申請不可</td>
 				<%} %>
 			</tr>
 				<br>
-				<%}%>
 			</table>
+			<%}%>
 		<%}%>
 
 </body>
