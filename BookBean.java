@@ -43,7 +43,7 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn order by status desc , genre desc, title ";
 
 			ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
@@ -79,7 +79,7 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where title like ?";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where title like ? order by status desc , genre desc, title";
 			ps = con.prepareStatement(sql.toString());
 			ps.setString(1,("%" + keyword + "%"));
 			ResultSet rs = ps.executeQuery();
