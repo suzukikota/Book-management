@@ -4,19 +4,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>ログイン失敗</title>
+
 <style>
 	h1{
 	color: red;
-	font-size: 20px;
+	font-size: 25px;
 	}
 	body {
-
-		background-color:#ADD8E6;
+		background-color:rgba(220,220,220,0.9);
 		text-align:center;
+		font-size:20px;
+		font-weight:600;
 			}
-	a:hover {
-			font-weight: bold;
+	button:hover {
+			border-bottom-color:transparent;
+			transform:translateY(0.1em);
 			}
 	/* 	リンクボタンの装飾 */
 	button{
@@ -24,15 +28,18 @@
 		padding:0.5em 1em;
 		text-decoration:none;
 		background:#668ad8;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		}
 </style>
+
 </head>
+
 <body>
 <h1>入力内容に誤りがあります。</h1>
 <h1>もう一度入力してください。</h1>
+
 <form action="ManagerLogin" method="post">
 	<p>ID<br><input type="text" name="id" required></p>
 	<p>パスワード<br><input type="text" name="password" required></p>

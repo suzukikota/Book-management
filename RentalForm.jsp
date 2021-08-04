@@ -17,7 +17,7 @@
 	body{
 		font-size: 17px;
 		text-align: center;
-		background-color:#ADD8E6;
+		background-color:rgba(220,220,220,0.9);
 		font-family: 'Noto Sans JP', sans-serif;
 	}
 	/* 	レンタルフォームの装飾 */
@@ -43,9 +43,9 @@
 		padding:0.5em 1em;
 		text-decoration:none;
 		background:#668ad8;
-		color:#FFF;
-		border^bottom:solid 4px #627295;
-		border-radius:3px;
+		color:#000000;
+		border-bottom:solid 4px #627295;
+		border-radius:10px;
 		font-family: 'Noto Sans JP', sans-serif;
 		}
 	.btn-square:hover{
@@ -90,6 +90,5 @@
 		<input type="submit" value="申請ボタン" class="btn-square">
 		</form>
 </div>
-
 </body>
 </html>

@@ -15,8 +15,8 @@
 	header{
 		width:100%;
 		padding:10px 10px;
- 		background-color:#ADD8E6;
-		color:#fff;
+ 		background-color:rgba(220,220,220,0.9);
+		color:#000000;
 		font-family: 'Noto Sans JP', sans-serif;
 	}
 	body {
@@ -44,7 +44,7 @@
 	.search2{
 		height:28px;
 		background:#668ad8;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 2px #627295;
 		font-family: 'Noto Sans JP', sans-serif;
 		}
@@ -56,6 +56,8 @@
 		height:40px;
 		table-layout:fixed;
 		width:1100px;
+		margin-left:auto;
+		margin-right:auto;
 		background-color:#FFF;
 		border-radius:5px;
 		border:solid 3px #6091d3;
@@ -66,9 +68,9 @@
 		padding:0.5em 1em;
 		text-decoration:none;
 		background-color:#668ad8;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 4px #627295;
-		border-radius:3px;
+		border-radius:10px;
 		font-family: 'Noto Sans JP', sans-serif;
 		}
 /* 	返却ボタンの装飾 */
@@ -76,10 +78,10 @@
  		display:inline-block;
  		padding:0.5em 1em;
  		text-decoration:none;
- 		background-color:#FFA07A;
- 		color:#FFF;
+ 		background-color:#668ad8;
+		color:#000000;
  		border-bottom:solid 4px #627295;
- 		border-radius:3px;
+ 		border-radius:10px;
 		padding:0.5em 1em;
  		margin:1em 0.5em;
 		font-family: 'Noto Sans JP', sans-serif;
@@ -90,7 +92,7 @@
 		padding:0.5em 1em;
 		text-decoration:none;
 		background-color:#FFA07A;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		position:absolute;
@@ -126,7 +128,7 @@
 		<br>
 <!-- 		<br>検索結果一覧 -->
 
-		<table border="1" align="center" >
+		<table border="1">
 			<tr>
 				<th>書籍番号</th>
 				<th>書籍名</th>
@@ -140,11 +142,11 @@
 		<%List<BookBean> list = obj.BookBeanDBtoList2(keyword);
 		for(int i=0;i<list.size();i++){
 			obj = list.get(i);%>
-			<table border="1" align="center" >
+			<table border="1">
 
 				<tr>
 					<td><%=obj.getIsbn() %></td>
-					<td ><%=obj.getTitle() %></td>
+					<td><%=obj.getTitle() %></td>
 					<td><%=obj.getGenre() %></td>
 					<td><%=obj.getPublisher() %></td>
 					<td><%=obj.getStatus() %></td>
@@ -155,13 +157,13 @@
 				<td>申請不可</td>
 				<%} %>
 				</tr>
-				<br>
+
 			</table>
 			<%} %>
 		<%}else if(keyword==null){%>
 			<br>
 
-		<table class="table" border="1" align="center" >
+		<table class="table" border="1">
 			<tr>
 				<th>書籍番号</th>
 				<th>書籍名</th>
@@ -175,7 +177,7 @@
 		<%List<BookBean> list = obj.BookBeanDBtoList();
 			for(int i=0;i<list.size();i++){
 				obj = list.get(i);%>
-			<table class="table" border="1" align="center" >
+			<table class="table" border="1">
 			<tr>
 				<td><%=obj.getIsbn() %></td>
 				<td><%=obj.getTitle() %></td>
@@ -189,8 +191,8 @@
 				<td>申請不可</td>
 				<%} %>
 			</tr>
-			<br>
-			<%}%>
+				<br>
+				<%}%>
 			</table>
 		<%}%>
 

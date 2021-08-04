@@ -7,23 +7,29 @@
 <title>管理者ログイン</title>
 <style>
 	body {
-		background-color:#ADD8E6;
+		background-color:rgba(220,220,220,0.9);
 		text-align:center;
+		font-size:20px;
+		font-weight:600;
 					}
-	a:hover {
-			font-weight: bold;
+	button:hover {
+			border-bottom-color:transparent;
+			transform:translateY(0.1em);
 					}
 	button{
 		display:inline-block;
 		padding:0.5em 1em;
 		text-decoration:none;
+		font-size:15px;
+		font-weight:570;
 		background:#668ad8;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		right:150px;
 		top:40px;
 		}
+
 </style>
 </head>
 

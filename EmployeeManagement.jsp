@@ -1,4 +1,4 @@
-  <%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <%@ page import="bean.*" %>
@@ -14,19 +14,20 @@
 <title>社員管理</title>
 <style>
 	body {
-
-		background-color:#ADD8E6;
+		background-color:rgba(220,220,220,0.9);
 		text-align:center;
 			}
 	table{
 		margin-left: auto;
   	    margin-right: auto;/*中央揃え*/
 			}
-	a:hover {
-			font-weight: bold;
+	button:hover {
+			border-bottom-color:transparent;
+			transform:translateY(0.1em);
 			}
 	table{
 		height:50px;
+		width:30%;
 		table-layout:fixed;
 		background:#FFF;
 		border-radius:10px;
@@ -38,13 +39,14 @@
 		padding:0.5em 1em;
 		text-decoration:none;
 		background:#668ad8;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		}
 
 </style>
 </head>
+
 <body>
 <button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 <button onclick="location.href='oklogin.jsp'">書籍管理</button>
@@ -63,23 +65,27 @@
 	<p>氏名<br><input type="text" name="name" required></p>
 	<p><input type="submit" name ="btn" value="追加"></p>
 </form>
+
 <br>
 <br>
-<table class="table" border="1" width="30%">
+<table class="table" border="1">
  <tr>
       <th width="5%">社員番号</th>
       <th width="20%">氏名</th>
-       <th width="5%">削除</th>
+      <th width="5%">削除</th>
  </tr>
+
 <%
 String btn = request.getParameter("btn");
 if(btn == null){
 	btn = "";
 }
+
 List<Employee_InfoBean> list = obj.Employee_InfoDBtoList(request.getParameter("linkEmployee_id"),request.getParameter("employee_id"), request.getParameter("name"), btn);
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BeanAccessDBクラスのオブジェクトに入れる
 %>
+
 <tr>
 <td><%= obj.getEmployee_id() %></td>
 <td><%= obj.getName() %></td>
@@ -87,8 +93,5 @@ obj = list.get(i);	// get()メソッドでArrayListから1件データを取出�
 <% } %>
  </tr>
  </table>
-
  <br>
-
-
 </body>

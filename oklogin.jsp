@@ -6,45 +6,48 @@
 <%@ page import="java.net.URLEncoder" %>
 <jsp:useBean id="obj" class="bean.BookBean"/>
 <jsp:useBean id="obj2" class="bean.Employee_InfoBean"/>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>書籍管理</title>
+
 <style>
 	body {
-
-		background-color:#ADD8E6;
-
+		background-color:rgba(220,220,220,0.9);
 			}
-	a:hover {
-			font-weight: bold;
+	button:hover {
+			border-bottom-color:transparent;
+			transform:translateY(0.1em);
 			}
 	table{
 		height:50px;
+		width:100%;
 		table-layout:fixed;
-		width:1200px;
 		background:#FFF;
 		border-radius:10px;
 		border:solid 3px #6091d3;
-		
 		}
-/* 	削除ボタンの装飾 */
+/* 	ボタンの装飾 */
 	button{
 		display:inline-block;
 		padding:0.5em 1em;
 		text-decoration:none;
 		background:#668ad8;
-		color:#FFF;
+		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		}
 
 </style>
 </head>
+
 <body>
 <button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 <button onclick="location.href='EmployeeManagement.jsp'">社員管理</button>
+
 <form action="#" method="POST">
 <div style="display:inline-flex">
     <p>図書番号<br><input type="text" name="isbn" required></p>
@@ -56,6 +59,7 @@
 		<option value="レンタル可">レンタル可</option>
 	</select></p>
 	</div>
+
 	<div style="display:inline-flex">
 	<p>借用者<br><select name="employee">
 		<%List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
@@ -103,15 +107,12 @@
 		if(borrow_date == null){
 			borrow_date = "";
 		}
-%>
+	String btn = request.getParameter("btn");
+		if(btn == null){
+			btn = "";
+		}%>
 
-<br>
-<%
-String btn = request.getParameter("btn");
-if(btn == null){
-	btn = "";
-}%>
-<table class="table" border="1" width="100%">
+<table class="table" border="1">
  <tr>
       <th width="15%">ISBN</th>
       <th width="30%">書籍名</th>
