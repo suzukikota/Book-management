@@ -36,6 +36,8 @@
 				}
 	p {
 		color: red;
+		font-size: 16px;
+		font-weight: 600;
 		font-family: 'Noto Sans JP', sans-serif;
 		}
 	.search{
