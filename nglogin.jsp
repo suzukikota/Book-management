@@ -11,12 +11,13 @@
 	h1{
 	color: red;
 	font-size: 25px;
-	}
+		}
 	body {
 		background-color:rgba(220,220,220,0.9);
 		text-align:center;
 		font-size:20px;
 		font-weight:600;
+		font-family: 'Noto Sans JP', sans-serif;
 			}
 	button:hover {
 			border-bottom-color:transparent;
@@ -31,6 +32,7 @@
 		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
 </style>
 

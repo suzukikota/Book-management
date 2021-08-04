@@ -11,6 +11,7 @@
 		text-align:center;
 		font-size:20px;
 		font-weight:600;
+		font-family: 'Noto Sans JP', sans-serif;
 					}
 	button:hover {
 			border-bottom-color:transparent;
@@ -28,8 +29,8 @@
 		border-radius:3px;
 		right:150px;
 		top:40px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
-
 </style>
 </head>
 

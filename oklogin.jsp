@@ -17,6 +17,7 @@
 <style>
 	body {
 		background-color:rgba(220,220,220,0.9);
+		font-family: 'Noto Sans JP', sans-serif;
 			}
 	button:hover {
 			border-bottom-color:transparent;
@@ -29,6 +30,7 @@
 		background:#FFF;
 		border-radius:10px;
 		border:solid 3px #6091d3;
+
 		}
 /* 	ボタンの装飾 */
 	button{
@@ -39,8 +41,8 @@
 		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
-
 </style>
 </head>
 
@@ -141,5 +143,3 @@ obj = list.get(i);	// get()メソッドでArrayListから1件データを取出�
    </tr>
  </table>
  <br>
-
-

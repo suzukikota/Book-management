@@ -16,6 +16,7 @@
 	body {
 		background-color:rgba(220,220,220,0.9);
 		text-align:center;
+		font-family: 'Noto Sans JP', sans-serif;
 			}
 	table{
 		margin-left: auto;
@@ -42,8 +43,8 @@
 		color:#000000;
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 		}
-
 </style>
 </head>
 
@@ -80,7 +81,6 @@ String btn = request.getParameter("btn");
 if(btn == null){
 	btn = "";
 }
-
 List<Employee_InfoBean> list = obj.Employee_InfoDBtoList(request.getParameter("linkEmployee_id"),request.getParameter("employee_id"), request.getParameter("name"), btn);
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BeanAccessDBクラスのオブジェクトに入れる
