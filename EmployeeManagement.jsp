@@ -34,7 +34,7 @@
 		border-radius:10px;
 		border:solid 3px #6091d3;
 		}
-/* 	削除ボタンの装飾 */
+/* 	ボタンの装飾 */
 	button{
 		display:inline-block;
 		padding:0.5em 1em;
@@ -45,6 +45,7 @@
 		border-radius:3px;
 		font-family: 'Noto Sans JP', sans-serif;
 		}
+
 </style>
 </head>
 
@@ -62,12 +63,13 @@
 		}
 %>
 <form action="#" method="POST">
-	<p>社員番号<br><input type="text" name="employee_id" required></p>
+	<p>社員番号<br><input type="text" name="employee_id" pattern="\d{6}" title="6桁の数字" required></p>
 	<p>氏名<br><input type="text" name="name" required></p>
 	<p><input type="submit" name ="btn" value="追加"></p>
 </form>
 
 <br>
+
 <br>
 <table class="table" border="1">
  <tr>
@@ -81,6 +83,7 @@ String btn = request.getParameter("btn");
 if(btn == null){
 	btn = "";
 }
+
 List<Employee_InfoBean> list = obj.Employee_InfoDBtoList(request.getParameter("linkEmployee_id"),request.getParameter("employee_id"), request.getParameter("name"), btn);
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BeanAccessDBクラスのオブジェクトに入れる

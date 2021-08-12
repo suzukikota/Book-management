@@ -29,8 +29,7 @@
 		table-layout:fixed;
 		background:#FFF;
 		border-radius:10px;
-		border:solid 3px #6091d3;
-
+/* 		border:solid 3px #6091d3; */
 		}
 /* 	ボタンの装飾 */
 	button{
@@ -43,46 +42,11 @@
 		border-radius:3px;
 		font-family: 'Noto Sans JP', sans-serif;
 		}
+
 </style>
 </head>
 
 <body>
-<button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
-<button onclick="location.href='EmployeeManagement.jsp'">社員管理</button>
-
-<form action="#" method="POST">
-<div style="display:inline-flex">
-    <p>図書番号<br><input type="text" name="isbn" required></p>
-	<p>書籍名<br><input type="text" name="title" required></p>
-	<p>ジャンル<br><input type="text" name="genre" required></p>
-	<p>出版社<br><input type="text" name="publisher" required></p>
-	<p>ステータス<br><select name="status">
-		<option value="レンタル中">レンタル中</option>
-		<option value="レンタル可">レンタル可</option>
-	</select></p>
-	</div>
-
-	<div style="display:inline-flex">
-	<p>借用者<br><select name="employee">
-		<%List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
-			for(int j=0;j<list2.size();j++){
-				obj2=list2.get(j);%>
-				<%=obj2.getName() %>
-
-			<option value=<%=obj2.getName()%>><%=obj2.getName()%></option>
-			<%} %>
-		</select></p>
-
-<!-- 	<p>借用者<br><input type="text" name="rental" required></p> -->
-	<p>レンタル日<br><input type="text" name="borrow_date" required></p>
-		</div>
-			<br>
-	<input type="submit" name ="btn" value="追加">
-
-	<br>
-	<br>
-</form>
-
 <%	String isbn = request.getParameter("isbn");
 		if(isbn == null){
 			isbn = "";
@@ -90,6 +54,10 @@
 	String title = request.getParameter("title");
 		if(title == null){
 			title = "";
+		}
+	String yomi = request.getParameter("yomi");
+		if(yomi == null){
+			yomi = "";
 		}
 	String genre = request.getParameter("genre");
 		if(genre == null){
@@ -100,6 +68,7 @@
 		}
 	String status = request.getParameter("status");
 		if(status == null){
+			status = "";
 		}
 	String employee = request.getParameter("employee");
 		if(employee == null){
@@ -114,6 +83,64 @@
 			btn = "";
 		}%>
 
+<button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
+<button onclick="location.href='EmployeeManagement.jsp'">社員管理</button>
+
+<form action="oklogin.jsp" method="POST">
+<div style="display:inline-flex">
+    <p>書籍番号<br><input type="text" name="isbn" pattern="\d{13}" title="13桁の数字"  required></p>
+	<p>書籍名<br><input type="text" name="title" required></p>
+	<p>読み仮名<br><input type="text" name="yomi" pattern="[^一-龥]{2,}" title="2文字以上の英数字、平仮名" required></p>
+	<p>ジャンル<br><select name="genre">
+		<option value="資格・検定">資格・検定</option>
+		<option value="人工知能">人工知能</option>
+		<option value="経営">経営</option>
+		<option value="プログラミング">プログラミング</option>
+		<option value="ビジネス">ビジネス</option>
+		<option value="ネットワーク">ネットワーク</option>
+		<option value="データベース">データベース</option>
+		<option value="テクノロジー・工学">テクノロジー・工学</option>
+		<option value="エクセル">エクセル</option>
+		<option value="OS">OS</option>
+		</select></p>
+	<p>出版社<br><input type="text" name="publisher" required></p>
+	<p>ステータス<br><select name="status">
+		<option value="レンタル可">レンタル可</option>
+		<option value="レンタル中">レンタル中</option>
+	</select></p>
+	</div>
+	<div style="display:inline-flex">
+	<p>借用者<br><select name="employee">
+		<%List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
+			for(int j=0;j<list2.size();j++){
+				obj2=list2.get(j);%>
+				<%=obj2.getName() %>
+
+			<option value=<%=obj2.getName()%>><%=obj2.getName()%></option>
+			<%} %>
+		</select></p>
+
+	<p>レンタル日<br><input type="date" name="borrow_date" required></p>
+	</div>
+	<br>
+	<input type="submit" name ="btn" value="追加">
+
+	<br>
+	<br>
+</form>
+
+<form action="oklogin.jsp" method="post">
+<!-- 	借用者の検索<br> -->
+	<br>
+	<input type="text" name="keyword" placeholder="借用者の検索" style="width:300px; height:23px;">
+	<input class="search2" type="submit" value="🔍 検索">
+</form>
+<br>
+
+
+	<%String keyword = request.getParameter("keyword");%>
+	<%if(keyword != null){%>
+
 <table class="table" border="1">
  <tr>
       <th width="15%">ISBN</th>
@@ -125,21 +152,62 @@
       <th width="10%">レンタル日</th>
       <th width="5%">削除</th>
  </tr>
-<%
-List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkId"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"));
-for(int i = 0; i < list.size(); i++){
-obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BeanAccessDBクラスのオブジェクトに入れる
+ </table>
+
+ <%
+List<BookBean> list4 = obj.BookBeanDBtoList4(keyword);
+for(int i = 0; i < list4.size(); i++){
+obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出し、BookBeanクラスのオブジェクトに入れる
 %>
+<table class="table" border="1">
  <tr>
-      <td><%= obj.getIsbn() %></td>
-      <td><%= obj.getTitle() %></td>
-      <td><%= obj.getGenre() %></td>
-      <td><%= obj.getPublisher() %></td>
-      <td><%= obj.getStatus() %></td>
-      <td><%= obj.getRental() %></td>
-      <td><%= obj.getBorrow_date() %></td>
-      <td><button onclick="location.href='oklogin.jsp?linkId=<%= obj.getIsbn() %>&btn=delete'">削除</button></td>
+      <td width="15%"><%= obj.getIsbn() %></td>
+      <td width="30%"><%= obj.getTitle() %></td>
+      <td width="10%"><%= obj.getGenre() %></td>
+      <td width="10%"><%= obj.getPublisher() %></td>
+      <td width="10%"><%= obj.getStatus() %></td>
+      <td width="10%"><%= obj.getRental() %></td>
+      <td width="10%"><%= obj.getBorrow_date() %></td>
+      <td width="5%"><button onclick="location.href='oklogin.jsp?linkId=<%= obj.getIsbn() %>&btn=delete'">削除</button></td>
 <% } %>
    </tr>
  </table>
- <br>
+	<%} %>
+		<%if(keyword == null){%>
+
+<table class="table" border="1">
+ <tr>
+      <th width="15%">ISBN</th>
+      <th width="30%">書籍名</th>
+      <th width="10%">ジャンル</th>
+      <th width="10%">出版社</th>
+      <th width="10%">ステータス</th>
+      <th width="10%">借用者</th>
+      <th width="10%">レンタル日</th>
+      <th width="5%">削除</th>
+ </tr>
+ </table>
+<%
+List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkId"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"),request.getParameter("yomi"));
+for(int i = 0; i < list.size(); i++){
+obj = list.get(i);	// get()メソッドでArrayListから1件データを取出し、BookBeanクラスのオブジェクトに入れる
+%>
+<table class="table" border="1">
+ <tr>
+      <td width="15%"><%= obj.getIsbn() %></td>
+      <td width="30%"><%= obj.getTitle() %></td>
+      <td width="10%"><%= obj.getGenre() %></td>
+      <td width="10%"><%= obj.getPublisher() %></td>
+      <td width="10%"><%= obj.getStatus() %></td>
+      <td width="10%"><%= obj.getRental() %></td>
+      <td width="10%"><%= obj.getBorrow_date() %></td>
+      <td width="5%"><button onclick="location.href='oklogin.jsp?linkId=<%= obj.getIsbn() %>&btn=delete'">削除</button></td>
+   </tr>
+ </table>
+ <%} %>
+ <%} %>
+
+</body>
+</html>
+
+
