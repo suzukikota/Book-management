@@ -12,17 +12,20 @@ public class Employee_InfoBean {
 	private String employee_id;
 	private String name;
 	private String delete_date;
+	private String mail;
 
 	public Employee_InfoBean() {}
-	public Employee_InfoBean(String employee_id,String name,String delete_date) {
+	public Employee_InfoBean(String employee_id,String name,String delete_date,String mail) {
 		this.employee_id=employee_id;
 		this.name=name;
 		this.delete_date=delete_date;
+		this.mail=mail;
 	}
 
 	public String getEmployee_id() {return employee_id;}
 	public String getName() {return name;}
 	public String delete_date() {return delete_date;}
+	public String getMail() {return mail;}
 
 	@SuppressWarnings("resource")
 	public List<Employee_InfoBean> Employee_InfoDBtoList(String selectId,String id, String names, String btn){
@@ -33,19 +36,20 @@ public class Employee_InfoBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql ="select * from employee_info where delete_date != '削除' order by cast(employee_id as int)";
+			String sql ="select * from employee_info where delete_date != '削除'  order by cast(employee_id as int)";
 			ps = con.prepareStatement(sql.toString());
 
 
+
 			if(btn.equals("delete")) {
-				sql = "update employee_info set delete_date = '削除' where employee_id = ?";
+				sql = "update employee_info set delete_date = '削除'  where employee_id = ? ";
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, selectId);
 				ps.executeUpdate();
 			}
 
 			if(btn.equals("追加")) {
-				sql = "insert into employee_info (employee_id,name,delete_date) values (?, ?, ?)"; // 追加
+				sql = "insert into employee_info (employee_id,name,delete_date) values (?, ?, ?)";
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, id);
 				ps.setString(2, names);
@@ -53,14 +57,16 @@ public class Employee_InfoBean {
 				ps.executeUpdate();
 			}
 
-			sql ="select * from employee_info where delete_date != '削除' order by cast(employee_id as int)";
+			sql ="select * from employee_info where delete_date != '削除'  order by cast(employee_id as int)";
 			ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {
 				String employee_id = rs.getString("employee_id");
 				String name = rs.getString("name");
-				list.add(new Employee_InfoBean(employee_id,name,delete_date));
+
+				list.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
+
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -70,6 +76,8 @@ public class Employee_InfoBean {
 				if (con != null) { con.close();}
 			} catch (Exception e) {
 				e.printStackTrace();
+
+
 			}
 		}
 		return list;
@@ -78,26 +86,26 @@ public class Employee_InfoBean {
 	public List<Employee_InfoBean> Employee_InfoDBtoList2(){
 		List<Employee_InfoBean> list2 =new ArrayList<Employee_InfoBean>();
 		Connection con = null;
-		PreparedStatement pS = null;
+		PreparedStatement ps = null;
 		try {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select * from employee_info where delete_date != '削除' order by name;";
+			String sql="select * from employee_info where delete_date != '削除'  order by name;";
 
-			pS=con.prepareStatement(sql.toString());
-			ResultSet rs = pS.executeQuery();
+			ps=con.prepareStatement(sql.toString());
+			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				String employee_id = rs.getString("employee_id");
 				String name = rs.getString("name");
 
-				list2.add(new Employee_InfoBean(employee_id,name,delete_date));
+				list2.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			try {
-				if(pS !=null) {pS.close();}
+				if(ps !=null) {ps.close();}
 				if(con !=null) {con.close();}
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -105,4 +113,36 @@ public class Employee_InfoBean {
 		}
 		return list2;
 	}
+	//	社員のメールアドレス取得
+	public List<Employee_InfoBean> Employee_InfoDBtoList3(String selectName){
+		List<Employee_InfoBean> list = new ArrayList<Employee_InfoBean>();
+		Connection con=null;
+		PreparedStatement ps=null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select mail from employee_info where name =?";
+
+			ps=con.prepareStatement(sql.toString());
+			ps.setString(1, selectName);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String mail = rs.getString("mail");
+
+				list.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(ps !=null) {ps.close();}
+					if(con !=null) {con.close();}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return list;
+		}
+
 }

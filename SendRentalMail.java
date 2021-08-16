@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 
+import bean.BookBean;
+
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import bean.BookBean;
 
 @WebServlet("/SendRentalMail")
 public class SendRentalMail extends HttpServlet {
@@ -38,7 +42,9 @@ public class SendRentalMail extends HttpServlet {
 		String Title=(String) session2.getAttribute("Title");
 		String name=request.getParameter("employee");
 
-		System.out.println(name);
+		BookBean bookBean=new BookBean();
+		bookBean.UpdateBookRental(name, isbn);
+		bookBean.UpdateBorrowStatus(isbn, rental);
 
 		String title = "書籍のレンタル申請";//メールのタイトル
 
@@ -51,9 +57,8 @@ public class SendRentalMail extends HttpServlet {
         		+ "レンタル予定日:"+rental+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+"\r\n"
-        		+"http://localhost:8080/BookManagement/RentalApproval.jsp"+" (レンタルの承認へ進む)"+"\r\n"
-        		+"\r\n"
-        		+"ここにURL"+" (書籍編集へ進む)";
+        		+"http://localhost:8080/BookManagement/WaitingList.jsp"+" (レンタルの承認へ進む)";
+
 
 
         response.setContentType("text/html; charset=UTF-8");
@@ -79,12 +84,12 @@ public class SendRentalMail extends HttpServlet {
             MimeMessage mimeMessage = new MimeMessage(session);
 
             InternetAddress toAddress =
-                    new InternetAddress("送信先メールアドレス", "宛名");//本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
+                    new InternetAddress("rt-mikami@sakura-communication.co.jp", "宛名");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
 
             mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 
             InternetAddress fromAddress =
-                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");//送信者情報
+                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");//	送信者情報
 
             mimeMessage.setFrom(fromAddress);
 
