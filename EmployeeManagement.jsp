@@ -51,7 +51,7 @@
 
 <body>
 <button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
-<button onclick="location.href='oklogin.jsp'">書籍管理</button>
+<button onclick="location.href='OkLogin.jsp'">書籍管理</button>
 
 <%	String employee_id = request.getParameter("employee_id");
 		if(employee_id == null){

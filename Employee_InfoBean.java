@@ -40,7 +40,6 @@ public class Employee_InfoBean {
 			ps = con.prepareStatement(sql.toString());
 
 
-
 			if(btn.equals("delete")) {
 				sql = "update employee_info set delete_date = '削除'  where employee_id = ? ";
 				ps = con.prepareStatement(sql.toString());
@@ -64,9 +63,7 @@ public class Employee_InfoBean {
 			while(rs.next()) {
 				String employee_id = rs.getString("employee_id");
 				String name = rs.getString("name");
-
 				list.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
-
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -76,8 +73,6 @@ public class Employee_InfoBean {
 				if (con != null) { con.close();}
 			} catch (Exception e) {
 				e.printStackTrace();
-
-
 			}
 		}
 		return list;
@@ -113,7 +108,8 @@ public class Employee_InfoBean {
 		}
 		return list2;
 	}
-	//	社員のメールアドレス取得
+
+//	社員のメールアドレス取得
 	public List<Employee_InfoBean> Employee_InfoDBtoList3(String selectName){
 		List<Employee_InfoBean> list = new ArrayList<Employee_InfoBean>();
 		Connection con=null;
