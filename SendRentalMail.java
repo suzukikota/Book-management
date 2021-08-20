@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.Properties;
 
 import bean.BookBean;
-
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import bean.BookBean;
 
 @WebServlet("/SendRentalMail")
 public class SendRentalMail extends HttpServlet {
@@ -34,10 +31,10 @@ public class SendRentalMail extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		HttpSession session2 = request.getSession();
 		request.setCharacterEncoding("UTF-8");
 		String rental=request.getParameter("rental");
+		session2.setAttribute("borrow_date", rental);
 		String isbn=(String) session2.getAttribute("isbn");
 		String Title=(String) session2.getAttribute("Title");
 		String name=request.getParameter("employee");

@@ -41,9 +41,8 @@ public class BookBean {
 	public String delete_date() {return delete_date;}
 	public String yomi() {return yomi;}
 
-
 //	(閲覧用)検索無し　書籍一覧の表示
-	public List<BookBean> BookBeanDBtoList(){
+	public List<BookBean> BookBeanDBtoList(int offset){
 		List<BookBean> list = new ArrayList<BookBean>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -51,8 +50,10 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where delete_date != '削除' order by status desc , genre desc, title ";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+					+ "where delete_date != '削除' order by status, genre desc, yomi limit 10 offset ?";
 			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, offset);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				String isbn = rs.getString("isbn");
@@ -78,7 +79,7 @@ public class BookBean {
 
 	//	(閲覧用)検索あり　検索にヒットする書籍一覧表示用
 	//	引数にkeyword
-	public List<BookBean> BookBeanDBtoList2(String keyword,String Genre){
+	public List<BookBean> BookBeanDBtoList2(String keyword,String Genre,int offset){
 		List<BookBean> list = new ArrayList<BookBean>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -86,15 +87,29 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where title like ? and genre like ? and delete_date != '削除'  order by status, genre desc, yomi";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+					+ "where title like ? and genre like ? and delete_date != '削除'  "
+					+ "order by status, genre desc, yomi limit 10 offset ?";
 			ps = con.prepareStatement(sql.toString());
 			ps.setString(1,("%" + keyword + "%"));
 			ps.setString(2,("%" + Genre + "%"));
+			ps.setInt(3, offset);
 
 			if(Genre.equals("すべてのジャンル")) {
-				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn where title like ? and delete_date != '削除'  order by status, genre desc, yomi";
+				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+						+ "where title like ? and delete_date != '削除'  order by status, genre desc, yomi limit 10 offset ?";
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1,("%" + keyword + "%"));
+				ps.setInt(2, offset);
+			}
+
+			if(keyword.equals("")) {
+				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+						+ "where delete_date != '削除' and genre like ? "
+						+ "order by status, genre desc, yomi limit 10 offset ?";
+				ps = con.prepareStatement(sql.toString());
+				ps.setString(1,("%" + Genre + "%"));
+				ps.setInt(2, offset);
 			}
 
 			ResultSet rs = ps.executeQuery();
@@ -262,7 +277,6 @@ public class BookBean {
 		return list4;
 	}
 
-
 	//	レンタル申請画面へ遷移した際の、書籍番号と書籍名を取得するメソッド
 	public List<BookBean> Rental(String isbn){
 		List<BookBean> list = new ArrayList<BookBean>();
@@ -279,6 +293,7 @@ public class BookBean {
 			while(rs.next()) {
 				String Isbn = rs.getString("isbn");
 				String title = rs.getString("title");
+				String rental = rs.getString("rental");
 				list.add(new BookBean(Isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
 			}
 		}catch (Exception e) {
@@ -294,134 +309,199 @@ public class BookBean {
 		return list;
 	}
 
-
-//レンタル申請と同時にrentalカラムにを「申請者名」をアップデートする
-public void UpdateBookRental(String name,String isbn) {
-	Connection con = null;
-	PreparedStatement ps = null;
-	try {
-		Driver.class.getDeclaredConstructor().newInstance();
-		con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
-		String sql = "update book set rental = ? where isbn = ?";
-		ps = con.prepareStatement(sql.toString());
-		ps.setString(1, name);
-		ps.setString(2, isbn);
-		ps.executeUpdate();
-
-	}catch (Exception e) {
-		e.printStackTrace();
-	} finally {
+	//	レンタル申請と同時にrentalカラムに「申請者名」をアップデートする
+	public void UpdateBookRental(String name,String isbn) {
+		Connection con = null;
+		PreparedStatement ps = null;
 		try {
-			if (ps != null) { ps.close();}
-			if (con != null) { con.close();}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-}
-
-//	レンタル申請と同時にstatusカラムを「申請待ち」、borrow_dateカラムに「レンタル日」をアップデートする
-public void UpdateBorrowStatus(String isbn,String rental) {
-	Connection con = null;
-	PreparedStatement ps = null;
-	try {
-		Driver.class.getDeclaredConstructor().newInstance();
-		con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
-		String sql = "update borrow set status = '申請待ち' , borrow_date = ? where isbn = ?";
-		ps = con.prepareStatement(sql.toString());
-		ps.setString(1, rental);
-		ps.setString(2, isbn);
-		ps.executeUpdate();
-
-	}catch (Exception e) {
-		e.printStackTrace();
-	} finally {
-		try {
-			if (ps != null) { ps.close();}
-			if (con != null) { con.close();}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-}
-//	承認待ちリストの表示
-public List<BookBean> Wating(){
-	List<BookBean> list = new ArrayList<BookBean>();
-	Connection con = null;
-	PreparedStatement ps = null;
-	try {
-		Driver.class.getDeclaredConstructor().newInstance();
-		con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
-
-		String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date "
-				+ "from borrow join book on borrow.isbn = book.isbn where status = '申請待ち' order by status, genre desc, yomi ";
-		ps = con.prepareStatement(sql.toString());
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			String isbn = rs.getString("isbn");
-			String title = rs.getString("title");
-			String genre = rs.getString("genre");
-			String publisher = rs.getString("publisher");
-			String status = rs.getString("status");
-			String rental = rs.getString("rental");
-			String borrow_date = rs.getString("borrow_date");
-			list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
-		}
-	}catch (Exception e) {
-		e.printStackTrace();
-	} finally {
-		try {
-			if (ps != null) { ps.close();}
-			if (con != null) { con.close();}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	return list;
-}
-
-//	管理者による承認待ちリストにおける「承認」又は「拒否」に応じたDB操作
-public void UpdateWating(String btn,String isbn) {
-	Connection con = null;
-	PreparedStatement ps = null;
-	try {
-		Driver.class.getDeclaredConstructor().newInstance();
-		con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
-
-		String sql="";
-		ps = con.prepareStatement(sql.toString());
-
-		if(btn.equals("approval")) {
-			sql="update borrow set status = 'レンタル中'  where isbn = ?";
-			ps=con.prepareStatement(sql.toString());
-			ps.setString(1, isbn);
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+			String sql = "update book set rental = ? where isbn = ?";
+			ps = con.prepareStatement(sql.toString());
+			ps.setString(1, name);
+			ps.setString(2, isbn);
 			ps.executeUpdate();
 
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+	}
 
-		if(btn.equals("rejection")) {
-			sql="update borrow set status = 'レンタル可' , borrow_date='' where isbn = ?";
-			ps=con.prepareStatement(sql.toString());
-			ps.setString(1, isbn);
-			ps.executeUpdate();
-		}
-
-		if(btn.equals("rejection")) {
-			sql="update book set rental = '' where isbn = ?";
-			ps=con.prepareStatement(sql.toString());
-			ps.setString(1, isbn);
-			ps.executeUpdate();
-		}
-	}catch(Exception e) {
-		e.printStackTrace();
-	}finally {
+	//	レンタル申請と同時にstatusカラムに「レンタル承認待ち」、borrow_dateカラムに「レンタル日」をアップデートする
+	public void UpdateBorrowStatus(String isbn,String rental) {
+		Connection con = null;
+		PreparedStatement ps = null;
 		try {
-			if(ps !=null) {ps.close();}
-			if(con !=null) {con.close();}
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+			String sql = "update borrow set status = 'レンタル承認待ち' , borrow_date = ? where isbn = ?";
+			ps = con.prepareStatement(sql.toString());
+			ps.setString(1, rental);
+			ps.setString(2, isbn);
+			ps.executeUpdate();
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	//	返却申請と同時にstatusカラムを「返却承認待ち」、borrow_dateカラムに「返却日」をアップデートする
+	public void UpdateBorrowStatus2(String isbn,String Return) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+			String sql ="update borrow set status = '返却承認待ち' , borrow_date = ? where isbn = ?";
+			ps=con.prepareStatement(sql.toString());
+			ps.setString(1, Return);
+			ps.setString(2, isbn);
+			ps.executeUpdate();
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	//	承認待ちリストの表示
+	public List<BookBean> Wating(){
+		List<BookBean> list = new ArrayList<BookBean>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date "
+					+ "from borrow join book on borrow.isbn = book.isbn where status like '%待ち' order by status, genre desc, yomi ";
+			ps = con.prepareStatement(sql.toString());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String isbn = rs.getString("isbn");
+				String title = rs.getString("title");
+				String genre = rs.getString("genre");
+				String publisher = rs.getString("publisher");
+				String status = rs.getString("status");
+				String rental = rs.getString("rental");
+				String borrow_date = rs.getString("borrow_date");
+				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	//	(レンタル)管理者による承認待ちリストにおける「承認」又は「拒否」に応じたDB操作
+	public void UpdateRentalWating(String btn,String isbn) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="";
+			ps = con.prepareStatement(sql.toString());
+
+			if(btn.equals("approval")) {
+				sql="update borrow set status = 'レンタル中'  where isbn = ?";
+				ps=con.prepareStatement(sql.toString());
+				ps.setString(1, isbn);
+				ps.executeUpdate();
+
+			}
+
+			if(btn.equals("rejection")) {
+				sql="update borrow set status = 'レンタル可' , borrow_date='' where isbn = ?";
+				ps=con.prepareStatement(sql.toString());
+				ps.setString(1, isbn);
+				ps.executeUpdate();
+			}
+
+			if(btn.equals("rejection")) {
+				sql="update book set rental = '' where isbn = ?";
+				ps=con.prepareStatement(sql.toString());
+				ps.setString(1, isbn);
+				ps.executeUpdate();
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				if(ps !=null) {ps.close();}
+				if(con !=null) {con.close();}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 
-}
+	//	(返却)管理者による承認待ちリストにおける「承認」又は「拒否」に応じたDB操作
+	public void UpdateReturnWating(String btn,String isbn,String test) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="";
+			ps = con.prepareStatement(sql.toString());
+
+			if(btn.equals("approval")) {
+				sql="update borrow set status = '近日返却予定'  where isbn = ?";
+				ps=con.prepareStatement(sql.toString());
+				ps.setString(1, isbn);
+				ps.executeUpdate();
+
+			}
+
+			if(btn.equals("rejection")) {
+				sql="update borrow set status = 'レンタル中' , borrow_date = ? where isbn = ?";
+				ps=con.prepareStatement(sql.toString());
+				ps.setString(1, test);
+				ps.setString(2, isbn);
+				ps.executeUpdate();
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(ps !=null) {ps.close();}
+				if(con !=null) {con.close();}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
 }

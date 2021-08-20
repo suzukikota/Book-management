@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 
+import bean.BookBean;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -36,9 +37,12 @@ public class SendReturnMail extends HttpServlet {
 		String Return=request.getParameter("return");
 		String isbn=(String) session2.getAttribute("isbn");
 		String Title=(String) session2.getAttribute("Title");
-		String name=request.getParameter("employee");
+		String name=(String) session2.getAttribute("employee");
 
-		System.out.println(name);
+		BookBean bookBean=new BookBean();
+		bookBean.UpdateBorrowStatus2(isbn, Return);//	statusを「返却承認待ち」にアップデート
+
+
 
 		String title = "書籍の返却申請";//メールのタイトル
 
@@ -51,9 +55,7 @@ public class SendReturnMail extends HttpServlet {
         		+ "返却予定日:"+Return+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+"\r\n"
-        		+"http://localhost:8080/BookManagement/ReturnApproval.jsp"+" (返却の承認へ進む)"+"\r\n"
-        		+"\r\n"
-        		+ "ここにURL"+"(書籍編集へ進む)";
+        		+"http://localhost:8080/BookManagement/WaitingList.jsp"+" (返却の承認へ進む)";
 
 
         response.setContentType("text/html; charset=UTF-8");
@@ -79,12 +81,12 @@ public class SendReturnMail extends HttpServlet {
             MimeMessage mimeMessage = new MimeMessage(session);
 
             InternetAddress toAddress =
-                    new InternetAddress("送信先メールアドレス", "宛名");//本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
+                    new InternetAddress("rt-mikami@sakura-communication.co.jp", name+"さん");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
 
             mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 
             InternetAddress fromAddress =
-                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");//送信者情報
+                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");//	送信者情報
 
             mimeMessage.setFrom(fromAddress);
 

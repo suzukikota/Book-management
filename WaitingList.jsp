@@ -28,7 +28,7 @@ button:hover {
 table {
 	height: 40px;
 	table-layout: fixed;
-	width: 80%;
+	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: #FFF;
@@ -47,10 +47,31 @@ table {
 	font-family: 'Noto Sans JP', sans-serif;
 }
 
+button{
+		display:inline-block;
+		padding:0.5em 1em;
+		text-decoration:none;
+		background:#668ad8;
+		color:#000000;
+		border-bottom:solid 4px #627295;
+		border-radius:3px;
+		font-family: 'Noto Sans JP', sans-serif;
 
+		}
+.btn{
+	text-align:left;
+	left:300px;
+	top:25px;
+}
 </style>
 </head>
 <body>
+
+<div class="btn">
+	<button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
+	<button onclick="location.href='oklogin.jsp'">管理用書籍一覧</button>
+</div>
+
 <h2>(仮)書籍のレンタル・返却申請承認待ちリスト</h2>
 
 <table class="table" border="1">
@@ -60,7 +81,7 @@ table {
 		<th>申請者名</th>
 		<th width=10%>ステータス</th>
 		<th>レンタル・返却日</th>
-		<th width=10%>承認ボタン</th>
+		<th width=15%>承認ボタン</th>
 	</tr>
 </table>
 
@@ -74,11 +95,15 @@ table {
 			<td><%=obj.getRental() %></td>
 			<td width=10%><%=obj.getStatus() %></td>
 			<td><%=obj.getBorrow_date() %></td>
-			<td width=10%><button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
-				<button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">拒否</button>
-			</td>
-			<%}%>
+			<%if(obj.getStatus().equals("レンタル承認待ち")){%>
+			<td width=15%><button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
+				<button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">否認</button>
+			</td><%}else{%>
+			<td width=15%><button onclick="location.href='SendReturnApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
+				<button onclick="location.href='SendReturnApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">否認</button>
+			<%} %></td>
+		</tr>
 	</table>
-
+	<%}%>
 </body>
 </html>
