@@ -1,5 +1,4 @@
 package servlet;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -52,6 +51,7 @@ public class SendReturnApproval extends HttpServlet {
 		}
 
 		String selectName=bookBean.getRental();
+		String selectTitle=bookBean.getTitle();
 		Employee_InfoBean employee_InfoBean=new Employee_InfoBean();
 
 		List<Employee_InfoBean> list2=employee_InfoBean.Employee_InfoDBtoList3(selectName);
@@ -63,14 +63,13 @@ public class SendReturnApproval extends HttpServlet {
 
 		String title = "書籍の返却申請の承認";//メールのタイトル
 
-        String message = "書籍の返却申請の承認"+"\r\n"//メールの本文(書籍や申請者を情報として組み込む)
+        String message = "書籍の返却申請の承認を受け取りました。"+"\r\n"//メールの本文(書籍や申請者を情報として組み込む)
         				+ "こちらは自動送信になります。"+"\r\n"
         				+ "申請者名:"+selectName+"さん"+"\r\n"
+        				+ "書籍名:"+selectTitle+"\r\n"
         				+ "返却の申請を承りました。"+"\r\n"
         				+ "次の帰社日にご返却下さい。"+"\r\n"
         				+ "よろしくお願いいたします。";
-
-
 
         response.setContentType("text/html; charset=UTF-8");
 
@@ -88,19 +87,19 @@ public class SendReturnApproval extends HttpServlet {
 
             Session session = Session.getInstance(property, new javax.mail.Authenticator(){
                 protected PasswordAuthentication getPasswordAuthentication(){
-                    return new PasswordAuthentication("syosekikanri.sakuracom@gmail.com", "hpg8jcwpr427");
+                    return new PasswordAuthentication("syosekikanri.sakuracom@gmail.com", "hpg8jcwpr427");//送信者Googleアカウント 本番ではここにさくら総務のGoogleアカウント情報を記入
                 }
             });
 
             MimeMessage mimeMessage = new MimeMessage(session);
 
             InternetAddress toAddress =
-                    new InternetAddress(mail, selectName+"さん");
+                    new InternetAddress(mail, selectName+"さん");// employee_infoテーブルのmailカラムに格納されたメールアドレスの中から、申請者に該当するメールアドレス宛に送る
 
             mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 
             InternetAddress fromAddress =
-                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");
+                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");//	送信者情報	本番ではここに("さくら総務メールアドレス","さくら総務")
 
             mimeMessage.setFrom(fromAddress);
 
@@ -112,13 +111,16 @@ public class SendReturnApproval extends HttpServlet {
 
             out.println("<htm><body>");
             out.println("■返却申請の承認を申請者へ送信しました。");
+            out.println("<br>");
+            out.println("<button onclick=\"location.href='OkLogin.jsp'\">管理用画面ホーム</button>");
             out.println("<body></html>");
         }
         catch(Exception e){
-            out.println("<html><body>");
-            out.println("■担当者への送信に失敗しました");
-            out.println("<br>エラーの内容" + e);
-            out.println("</body></html>");
+        	out.println("<htm><body>");
+            out.println("■返却申請の承認を申請者への送信に失敗しました");
+            out.println("<br>");
+            out.println("<button onclick=\"location.href='OkLogin.jsp'\">管理用画面ホーム</button>");
+            out.println("<body></html>");
         }
 
         out.close();
@@ -135,6 +137,7 @@ public class SendReturnApproval extends HttpServlet {
 			}
 
 			String selectName=bookBean.getRental();
+			String selectTitle=bookBean.getTitle();
 			Employee_InfoBean employee_InfoBean=new Employee_InfoBean();
 
 			List<Employee_InfoBean> list2=employee_InfoBean.Employee_InfoDBtoList3(selectName);
@@ -145,13 +148,12 @@ public class SendReturnApproval extends HttpServlet {
 
 			String title = "書籍の返却申請の否認";
 
-	        String message = "書籍の返却申請の否認"+"\r\n"
+	        String message = "書籍の返却申請の否認を受け取りました。"+"\r\n"
 	        				+ "こちらは自動送信になります。"+"\r\n"
 	        				+ "申請者名:"+selectName+"さん"+"\r\n"
+	        				+ "書籍名:"+selectTitle+"\r\n"
 	        				+ "返却の申請を承ることが出来ませんでした。"+"\r\n"
 	           				+ "よろしくお願いいたします。";
-
-
 
 	        response.setContentType("text/html; charset=UTF-8");
 
@@ -169,19 +171,19 @@ public class SendReturnApproval extends HttpServlet {
 
 	            Session session = Session.getInstance(property, new javax.mail.Authenticator(){
 	                protected PasswordAuthentication getPasswordAuthentication(){
-	                    return new PasswordAuthentication("syosekikanri.sakuracom@gmail.com", "hpg8jcwpr427");
+	                    return new PasswordAuthentication("syosekikanri.sakuracom@gmail.com", "hpg8jcwpr427");//	送信者Googleアカウント 本番ではここにさくら総務のGoogleアカウント情報を記入
 	                }
 	            });
 
 	            MimeMessage mimeMessage = new MimeMessage(session);
 
 	            InternetAddress toAddress =
-	                    new InternetAddress(mail, selectName+"さん");
+	                    new InternetAddress(mail, selectName+"さん");// employee_infoテーブルのmailカラムに格納されたメールアドレスの中から、申請者に該当するメールアドレス宛に送る
 
 	            mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 
 	            InternetAddress fromAddress =
-	                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");
+	                    new InternetAddress("syosekikanri.sakuracom@gmail.com","さくら書籍管理");//	送信者情報	本番ではここに("さくら総務メールアドレス","さくら総務")
 
 	            mimeMessage.setFrom(fromAddress);
 
@@ -192,21 +194,19 @@ public class SendReturnApproval extends HttpServlet {
 	            Transport.send(mimeMessage);
 
 	            out.println("<htm><body>");
-	            out.println("■返却申請の承認を申請者へ送信しました。");
+	            out.println("■返却申請の否認を申請者へ送信しました。");
+	            out.println("<br>");
+	            out.println("<button onclick=\"location.href='OkLogin.jsp'\">管理用画面ホーム</button>");
 	            out.println("<body></html>");
 	        }
 	        catch(Exception e){
 	            out.println("<html><body>");
-	            out.println("■担当者への送信に失敗しました");
-	            out.println("<br>エラーの内容" + e);
+	            out.println("■返却申請の否認を申請者への送信に失敗しました");
+	            out.println("<br>");
+	            out.println("<button onclick=\"location.href='OkLogin.jsp'\">管理用画面ホーム</button>");
 	            out.println("</body></html>");
 	        }
-
 	        out.close();
-
-
 		}
-
     }
-
 }

@@ -46,7 +46,7 @@ public class SendReturnMail extends HttpServlet {
 
 		String title = "書籍の返却申請";//メールのタイトル
 
-        String message = "書籍の返却申請"+"\r\n"//メールの本文(書籍や申請者を情報として組み込む)
+        String message = "書籍の返却申請を受け取りました。"+"\r\n"//メールの本文(書籍や申請者を情報として組み込む)
         		+ "こちらは自動送信になります。"+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+ "申請者名:"+name+"\r\n"
@@ -56,7 +56,6 @@ public class SendReturnMail extends HttpServlet {
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+"\r\n"
         		+"http://localhost:8080/BookManagement/WaitingList.jsp"+" (返却の承認へ進む)";
-
 
         response.setContentType("text/html; charset=UTF-8");
 
@@ -81,7 +80,7 @@ public class SendReturnMail extends HttpServlet {
             MimeMessage mimeMessage = new MimeMessage(session);
 
             InternetAddress toAddress =
-                    new InternetAddress("rt-mikami@sakura-communication.co.jp", name+"さん");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
+                    new InternetAddress("rt-mikami@sakura-communication.co.jp","さくら総務宛");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
 
             mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 
@@ -98,16 +97,17 @@ public class SendReturnMail extends HttpServlet {
 
             out.println("<htm><body>");
             out.println("■返却申請内容を担当者へ送信しました。");
+            out.println("<br>");
+            out.println("<button onclick=\"location.href='BookHome.jsp'\">閲覧用書籍一覧</button>");
             out.println("<body></html>");
         }
         catch(Exception e){
             out.println("<html><body>");
             out.println("■担当者への送信に失敗しました");
-            out.println("<br>エラーの内容" + e);
+	        out.println("<br>");
+            out.println("<button onclick=\"location.href='BookHome.jsp'\">閲覧用書籍一覧</button>");
             out.println("</body></html>");
         }
-
         out.close();
     }
-
 }
