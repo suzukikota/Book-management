@@ -8,6 +8,8 @@ import java.util.List;
 import org.mariadb.jdbc.Driver;
 
 
+
+
 public class BookBean {
 	private String isbn;
 	private String title;
@@ -95,6 +97,13 @@ public class BookBean {
 			ps.setString(2,("%" + Genre + "%"));
 			ps.setInt(3, offset);
 
+			if(Genre.equals("すべてのジャンル") && keyword!=null) {
+				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+						+ "where delete_date != '削除'  order by status, genre desc, yomi limit 10 offset ?";
+				ps = con.prepareStatement(sql.toString());
+				ps.setInt(1, offset);
+			}
+
 			if(Genre.equals("すべてのジャンル")) {
 				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
 						+ "where title like ? and delete_date != '削除'  order by status, genre desc, yomi limit 10 offset ?";
@@ -103,12 +112,12 @@ public class BookBean {
 				ps.setInt(2, offset);
 			}
 
-			if(keyword.equals("")) {
+			if(keyword==null) {
 				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
-						+ "where delete_date != '削除' and genre like ? "
+						+ "where delete_date != '削除' and genre = ? "
 						+ "order by status, genre desc, yomi limit 10 offset ?";
 				ps = con.prepareStatement(sql.toString());
-				ps.setString(1,("%" + Genre + "%"));
+				ps.setString(1, Genre);
 				ps.setInt(2, offset);
 			}
 
@@ -385,7 +394,7 @@ public class BookBean {
 	}
 
 	//	承認待ちリストの表示
-	public List<BookBean> Wating(){
+	public List<BookBean> Wating(int offset){
 		List<BookBean> list = new ArrayList<BookBean>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -394,7 +403,45 @@ public class BookBean {
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
 			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date "
-					+ "from borrow join book on borrow.isbn = book.isbn where status like '%待ち' order by status, genre desc, yomi ";
+					+ "from borrow join book on borrow.isbn = book.isbn "
+					+ "where status like '%待ち' order by status, genre desc, yomi limit 10 offset ?";
+			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, offset);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String isbn = rs.getString("isbn");
+				String title = rs.getString("title");
+				String genre = rs.getString("genre");
+				String publisher = rs.getString("publisher");
+				String status = rs.getString("status");
+				String rental = rs.getString("rental");
+				String borrow_date = rs.getString("borrow_date");
+				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public List<BookBean> Wating2(){
+		List<BookBean> list = new ArrayList<BookBean>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date "
+					+ "from borrow join book on borrow.isbn = book.isbn "
+					+ "where status like '%待ち' order by status, genre desc, yomi";
 			ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
@@ -477,7 +524,7 @@ public class BookBean {
 			ps = con.prepareStatement(sql.toString());
 
 			if(btn.equals("approval")) {
-				sql="update borrow set status = '近日返却予定'  where isbn = ?";
+				sql="update borrow set status = 'レンタル中'  where isbn = ?";
 				ps=con.prepareStatement(sql.toString());
 				ps.setString(1, isbn);
 				ps.executeUpdate();
@@ -503,5 +550,67 @@ public class BookBean {
 			}
 		}
 
+	}
+	public List<BookBean> BookBeanDBtoList5(String keyword,String Genre){
+		List<BookBean> list = new ArrayList<BookBean>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+					+ "where title like ? and genre like ? and delete_date != '削除'  "
+					+ "order by status, genre desc, yomi";
+			ps = con.prepareStatement(sql.toString());
+			ps.setString(1,("%" + keyword + "%"));
+			ps.setString(2,("%" + Genre + "%"));
+
+
+			if(Genre.equals("すべてのジャンル") && keyword!=null) {
+				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+						+ "where delete_date != '削除'  order by status, genre desc, yomi";
+				ps = con.prepareStatement(sql.toString());
+
+			}
+
+			if(Genre.equals("すべてのジャンル")) {
+				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+						+ "where title like ? and delete_date != '削除'  order by status, genre desc, yomi";
+				ps = con.prepareStatement(sql.toString());
+				ps.setString(1,("%" + keyword + "%"));
+
+			}
+
+			if(keyword==null) {
+				sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+						+ "where delete_date != '削除' and genre = ? "
+						+ "order by status, genre desc, yomi";
+				ps = con.prepareStatement(sql.toString());
+				ps.setString(1, Genre);
+
+			}
+
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String isbn = rs.getString("isbn");
+				String title = rs.getString("title");
+				String genre = rs.getString("genre");
+				String publisher = rs.getString("publisher");
+				String status = rs.getString("status");
+
+				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
 	}
 }

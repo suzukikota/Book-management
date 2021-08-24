@@ -110,7 +110,7 @@ table {
 	font-family: 'Noto Sans JP', sans-serif;
 }
 
-
+/* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
@@ -162,10 +162,6 @@ nav.cp_navi {
 	line-height: 50px;
 	padding: 0 15px;
 	}
-	.cp_navi .cp_pagenum.prev,
-	.cp_navi .cp_pagenum.next {
-		padding: 0 10px;
-	}
 }
 @media only screen and (min-width: 120px) and (max-width: 767px) {
 	.cp_navi .cp_pagenum {
@@ -193,20 +189,14 @@ nav.cp_navi {
 	.cp_navi .cp_pagenum:nth-last-child(-n+4)::after {
 		content: none;
 	}
-	.cp_navi .cp_pagenum.prev,
-	.cp_navi .cp_pagenum.next {
-		padding: 0 5px;
-	}
 }
-
-
 </style>
 </head>
 
 <body>
 	<header>
-		<h1>さくら書籍管理</h1>
-		<button class="btn-square3" onclick="location.href='login.jsp'">管理者ログイン</button>
+		<h1><a href='BookHome.jsp'>さくら書籍管理</a></h1>
+		<button class="btn-square3" onclick="location.href='Login.jsp'">管理者ログイン</button>
 
 
 		<p>※会社経費による書籍購入には会社の決済承認が必要です
@@ -216,8 +206,8 @@ nav.cp_navi {
 
 	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
 
-<dic class="searchform">
-	<form class="search" action="BookHome.jsp" method="post">
+<div class="searchform">
+	<form class="search" action="BookHome2.jsp" method="post">
 		<!-- 	書籍名の検索<br> -->
 		<br> <input type="search" name="keyword" placeholder="キーワードから検索" style="width: 300px; height: 23px;">
 			<select name="genre" style="width: 150px; height: 23px;">
@@ -226,7 +216,7 @@ nav.cp_navi {
 				<option value="経営">経営</option>
 				<option value="資格・検定">資格・検定</option>
 				<option value="人工知能">人工知能</option>
-				<option value="テクノロジー">テクノロジー</option>
+				<option value="テクノロジー・工学">テクノロジー・工学</option>
 				<option value="データベース">データベース</option>
 				<option value="ネットワーク">ネットワーク</option>
 				<option value="ビジネス">ビジネス</option>
@@ -242,122 +232,7 @@ nav.cp_navi {
 	<%String param=request.getParameter("param"); %>
 	<%int offset; %>
 
-	<!--キーワードあり -->
-
-	<%if(keyword!=null||Genre!=null){%>
-	<%if(param==null){ %>
-	<%offset=0; %>
-	<br>
-	<table border="1">
-		<tr>
-			<th>書籍番号</th>
-			<th width=32%>書籍名</th>
-			<th>ジャンル</th>
-			<th>出版社</th>
-			<th width=10%>ステータス</th>
-			<th width=8%>申請</th>
-		</tr>
-	</table>
-
-	<%List<BookBean> list = obj.BookBeanDBtoList2(keyword,Genre,offset);
-		for(int i=0;i<list.size();i++){
-			obj = list.get(i);%>
-	<table border="1">
-		<tr>
-			<td><%=obj.getIsbn() %></td>
-			<td width=32%><%=obj.getTitle() %></td>
-			<td><%=obj.getGenre() %></td>
-			<td><%=obj.getPublisher() %></td>
-			<td width=10%><%=obj.getStatus() %></td>
-			<%String status=obj.getStatus(); %>
-			<%if(status.contains("レンタル可")){ %>
-			<td width=8%><button
-					onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
-					class="btn-square">申請</button> <%}else{ %>
-			<td width=8%>申請不可</td>
-			<%} %>
-		</tr>
-		<br>
-	</table>
-	<%} %>
-	<nav class="cp_navi">
-	<div class="cp_pagination">
-		<span aria-current="page" class="cp_pagenum current">1</span>
-		<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
-		<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
-	</div>
-	</nav>
-	<%}else if(param!=null){%>
-	<%int num=Integer.parseInt(param); %>
-	<%offset=10*(num-1); %>
-	<br>
-	<table border="1">
-		<tr>
-			<th>書籍番号</th>
-			<th width=32%>書籍名</th>
-			<th>ジャンル</th>
-			<th>出版社</th>
-			<th width=10%>ステータス</th>
-			<th width=8%>申請</th>
-		</tr>
-	</table>
-	<%List<BookBean> list = obj.BookBeanDBtoList2(keyword,Genre,offset);
-		for(int i=0;i<list.size();i++){
-			obj = list.get(i);%>
-	<table border="1">
-		<tr>
-			<td><%=obj.getIsbn() %></td>
-			<td width=32%><%=obj.getTitle() %></td>
-			<td><%=obj.getGenre() %></td>
-			<td><%=obj.getPublisher() %></td>
-			<td width=10%><%=obj.getStatus() %></td>
-			<%String status=obj.getStatus(); %>
-			<%if(status.contains("レンタル可")){ %>
-			<td width=8%><button
-					onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
-					class="btn-square">申請</button> <%}else{ %>
-			<td width=8%>申請不可</td>
-			<%} %>
-		</tr>
-		<br>
-	</table>
-	<%} %>
-
-			<%if(num==1){%>
-				<nav class="cp_navi">
-					<div class="cp_pagination">
-						<span aria-current="page" class="cp_pagenum current">1</span>
-						<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
-					</div>
-				</nav>
-			<%}%>
-
-
-
-
-			<%if(num==2){%>
-				<nav class="cp_navi">
-					<div class="cp_pagination">
-						<a class="cp_pagenum" href="BookHome.jsp?param=1">1</a>
-						<span aria-current="page" class="cp_pagenum current">2</span>
-						<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
-					</div>
-				</nav>
-			<%}%>
-
-			<%if(num==3){ %>
-				<nav class="cp_navi">
-					<div class="cp_pagination">
-						<a class="cp_pagenum" href="BookHome.jsp?param=1">1</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
-						<span aria-current="page" class="cp_pagenum current">3</span>
-					</div>
-				</nav>
-			<%} %>
-			<%} %>
-
-	<%}else if(keyword==null){%>
+	<%if(keyword==null){%>
 	<%if(param==null){ %>
 	<%offset=0; %>
 	<br>
@@ -400,7 +275,6 @@ nav.cp_navi {
 		<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
 		<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
 		<a class="cp_pagenum" href="BookHome.jsp?param=4">4</a>
-		<a class="cp_pagenum" href="BookHome.jsp?param=5">5</a>
 	</div>
 	</nav>
 	<%}else if(param!=null){%>
@@ -448,13 +322,9 @@ nav.cp_navi {
 						<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
 						<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
 						<a class="cp_pagenum" href="BookHome.jsp?param=4">4</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=5">5</a>
 					</div>
 				</nav>
 			<%}%>
-
-
-
 
 			<%if(num==2){%>
 				<nav class="cp_navi">
@@ -463,8 +333,6 @@ nav.cp_navi {
 						<span aria-current="page" class="cp_pagenum current">2</span>
 						<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
 						<a class="cp_pagenum" href="BookHome.jsp?param=4">4</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=5">5</a>
-
 					</div>
 				</nav>
 			<%}%>
@@ -476,8 +344,6 @@ nav.cp_navi {
 						<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
 						<span aria-current="page" class="cp_pagenum current">3</span>
 						<a class="cp_pagenum" href="BookHome.jsp?param=4">4</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=5">5</a>
-
 					</div>
 				</nav>
 			<%} %>
@@ -489,25 +355,9 @@ nav.cp_navi {
 						<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
 						<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
 						<span aria-current="page" class="cp_pagenum current">4</span>
-						<a class="cp_pagenum" href="BookHome.jsp?param=5">5</a>
-
 					</div>
 				</nav>
 			<%} %>
-
-			<%if(num==5){ %>
-				<nav class="cp_navi">
-					<div class="cp_pagination">
-						<a class="cp_pagenum" href="BookHome.jsp?param=1">1</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=2">2</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=3">3</a>
-						<a class="cp_pagenum" href="BookHome.jsp?param=4">4</a>
-						<span aria-current="page" class="cp_pagenum current">5</span>
-
-					</div>
-				</nav>
-			<%} %>
-
 	<%} %>
 	<%}%>
 </body>
