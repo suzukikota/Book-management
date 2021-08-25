@@ -254,7 +254,7 @@ nav.cp_navi {
 	<br>
 	<table border="1">
 		<tr>
-			<th>書籍番号キーワードは</th>
+			<th>書籍番号</th>
 			<th width=32%>書籍名</th>
 			<th>ジャンル</th>
 			<th>出版社</th>
