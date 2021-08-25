@@ -238,7 +238,9 @@ nav.cp_navi {
 </div>
 	<!-- 	あらゆるデータの受け取り -->
 	<%String keyword = request.getParameter("keyword");%>
-	<%session.setAttribute("key", keyword);%>
+	<%if(keyword!=null){
+		session.setAttribute("key", keyword);
+		}%>
 	<%String Genre = request.getParameter("genre");%>
 	<%if(Genre!=null){
 		session.setAttribute("gen", Genre);
@@ -252,7 +254,7 @@ nav.cp_navi {
 	<br>
 	<table border="1">
 		<tr>
-			<th>書籍番号</th>
+			<th>書籍番号キーワードは</th>
 			<th width=32%>書籍名</th>
 			<th>ジャンル</th>
 			<th>出版社</th>
@@ -333,7 +335,7 @@ nav.cp_navi {
 	<%keyword=(String)session.getAttribute("key"); %>
 	<%Genre=(String)session.getAttribute("gen"); %>
 
-	<%if(Genre.equals("すべてのジャンル")){%>
+	<%if(Genre.equals("すべてのジャンル") && keyword==""){%>
 		<br>
 		<table class="table" border="1">
 			<tr>
@@ -412,6 +414,7 @@ nav.cp_navi {
 					</nav>
 	<%} %>
 	<%}else{ %>
+	<%keyword=(String)session.getAttribute("key"); %>
 	<br>
 	<table border="1">
 		<tr>
