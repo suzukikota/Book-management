@@ -425,7 +425,16 @@ public class BookBean {
 			ps.setInt(1, offset);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-}
+			String isbn = rs.getString("isbn");
+			String title = rs.getString("title");
+			String genre = rs.getString("genre");
+			String publisher = rs.getString("publisher");
+			String status = rs.getString("status");
+			String rental = rs.getString("rental");
+			String borrow_date = rs.getString("borrow_date");
+			list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
+
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
