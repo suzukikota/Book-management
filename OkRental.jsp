@@ -34,12 +34,10 @@ function check(){
 		font-family: 'Noto Sans JP', sans-serif;
 		text-align: center;
 			}
-
 	button:hover {
 			border-bottom-color:transparent;
 			transform:translateY(0.1em);
 			}
-
 	table{
 		height:20px;
 		width:100%;
@@ -49,7 +47,6 @@ function check(){
 		margin-left: auto;
   	    margin-right: auto;/*中央揃え*/
 		}
-
 /* 	ボタンの装飾 */
 	button{
 		display:inline-block;
@@ -85,6 +82,7 @@ function check(){
 		position: relative;
 		left: 340px;
 		}
+
 
 	nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 		-webkit-box-sizing: border-box;
@@ -238,14 +236,13 @@ function check(){
 			param = "1";
 		}
 
-
 		int offset=0; %>
 
 <button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 <button onclick="location.href='EmployeeManagement.jsp'">社員管理</button>
 <button onclick="location.href='WaitingList.jsp'">承認待ちリスト</button>
 
-<form action="OkLogin.jsp" method="POST">
+<form action="OkRental.jsp" method="POST">
 <div style="display:inline-flex">
     <p>書籍番号<br><input type="text" name="isbn" pattern="\d{13}" title="13桁の数字"  required></p>
 	<p>書籍名<br><input type="text" name="title" required></p>
@@ -264,26 +261,13 @@ function check(){
 		</select></p>
 	<p>出版社<br><input type="text" name="publisher" required></p>
 	<p>ステータス<br><select name="status">
-		<option value="レンタル中">レンタル中</option>
+		<option value="レンタル可">レンタル可</option>
 	</select></p>
 	</div>
-	<div style="display:inline-flex">
-	<p>借用者<br><select name="employee">
-		<%List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
-			for(int j=0;j<list2.size();j++){
-				obj2=list2.get(j);%>
-				<%=obj2.getName() %>
-
-			<option value=<%=obj2.getName()%>><%=obj2.getName()%></option>
-			<%} %>
-		</select></p>
-
-	<p>レンタル日<br><input type="date" name="borrow_date" required></p>
-	</div>
 	<br>
-	<input type="submit" name ="btn" value="追加">
-	<button onclick="location.href='OkLogin.jsp'" class="btn-rental">レンタル中書籍</button>
-	<button onclick="location.href='OkRental.jsp'" class="btn-rental">レンタル可能書籍</button>
+	<input type="submit" name ="btn" value="追 加">
+<button onclick="location.href='OkLogin.jsp'" class="btn-rental">レンタル中書籍</button>
+<button onclick="location.href='OkRental.jsp'" class="btn-rental">レンタル可能書籍</button>
 	<br>
 </form>
 
@@ -334,8 +318,7 @@ obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出�
 		       		<option value="レンタル可">レンタル可</option>
 		        <%} else{%>
 		       		<option value="レンタル中">レンタル中</option>
-		   	    <%} %>
-		   	</select>
+		   	    <%} %>	</select>
 
 		   	<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
 			<input type="submit" name ="btn" value="更新">
@@ -345,7 +328,7 @@ obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出�
       <td width="10%"><%= obj.getBorrow_date() %></td>
       <td width="5%">
 	      <form method="POST" action="OkLogin.jsp?linkid=<%= obj.getIsbn() %>&btn=delete" onSubmit="return check()">
-			<button type="submit" value="送信">削除</button>
+		  <button type="submit" value="送信">削除</button>
 	      </form>
       </td>
 <% } %>
@@ -371,7 +354,7 @@ obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出�
  </tr>
  </table>
 <%
-List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkid"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"),request.getParameter("yomi"),request.getParameter("changes"),offset);
+List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkId"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"),request.getParameter("yomi"),request.getParameter("changes"),offset);
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);
 %>
@@ -382,7 +365,7 @@ obj = list.get(i);
       <td width="10%"><%= obj.getGenre() %></td>
       <td width="13%"><%= obj.getPublisher() %></td>
       <td width="12%">
-		<form action="OkLogin.jsp" method="POST">
+		<form action="OkRental.jsp" method="POST">
 			<select name="changes">
 			  		<option value=<%= obj.getStatus() %>><%= obj.getStatus() %></option>
 				<%String status2 = (obj.getStatus());%>
@@ -390,30 +373,31 @@ obj = list.get(i);
 		       		<option value="レンタル可">レンタル可</option>
 		        <%} else{%>
 		       		<option value="レンタル中">レンタル中</option>
-		   	    <%} %>
-		   	</select>
-		   		<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
-				<input type="submit" name ="btn" value="更新" >
+		   	    <%} %>	</select>
+
+		   	<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
+			<input type="submit" name ="btn" value="更新">
 		</form>
-	</td>
+	  </td>
       <td width="10%"><%= obj.getRental() %></td>
       <td width="10%"><%= obj.getBorrow_date() %></td>
-      <td width="5%">
-		  <form method="POST" action="OkLogin.jsp?linkid=<%= obj.getIsbn() %>&btn=delete" onSubmit="return check()">
+     <td width="5%">
+	      <form method="POST" action="OkLogin.jsp?linkid=<%= obj.getIsbn() %>&btn=delete" onSubmit="return check()">
 			<button type="submit" value="送信">削除</button>
 	      </form>
       </td>
+   </tr>
  </table>
 <%}%>
 
-			 <%if(num==1){%>
+			<%if(num==1){%>
 							<nav class="cp_navi">
 								<div class="cp_pagination">
 									<span aria-current="page" class="cp_pagenum current">1</span>
-									<a class="cp_pagenum" href="OkLogin.jsp?param=2">2</a>
-									<a class="cp_pagenum" href="OkLogin.jsp?param=3">3</a>
-									<a class="cp_pagenum" href="OkLogin.jsp?param=4">4</a>
-									<a class="cp_pagenum" href="OkLogin.jsp?param=5">5</a>
+									<a class="cp_pagenum" href="OkRental.jsp?param=2">2</a>
+									<a class="cp_pagenum" href="OkRental.jsp?param=3">3</a>
+									<a class="cp_pagenum" href="OkRental.jsp?param=4">4</a>
+									<a class="cp_pagenum" href="OkRental.jsp?param=5">5</a>
 								</div>
 							</nav>
 						<%}%>
@@ -421,11 +405,11 @@ obj = list.get(i);
 			<%if(num==2){%>
 				<nav class="cp_navi">
 					<div class="cp_pagination">
-						<a class="cp_pagenum" href="OkLogin.jsp?param=1">1</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=1">1</a>
 						<span aria-current="page" class="cp_pagenum current">2</span>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=3">3</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=4">4</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=5">5</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=3">3</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=4">4</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=5">5</a>
 					</div>
 				</nav>
 			<%}%>
@@ -433,11 +417,11 @@ obj = list.get(i);
 			<%if(num==3){ %>
 				<nav class="cp_navi">
 					<div class="cp_pagination">
-						<a class="cp_pagenum" href="OkLogin.jsp?param=1">1</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=2">2</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=1">1</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=2">2</a>
 						<span aria-current="page" class="cp_pagenum current">3</span>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=4">4</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=5">5</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=4">4</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=5">5</a>
 					</div>
 				</nav>
 			<%} %>
@@ -445,11 +429,11 @@ obj = list.get(i);
 			<%if(num==4){ %>
 				<nav class="cp_navi">
 					<div class="cp_pagination">
-						<a class="cp_pagenum" href="OkLogin.jsp?param=1">1</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=2">2</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=3">3</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=1">1</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=2">2</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=3">3</a>
 						<span aria-current="page" class="cp_pagenum current">4</span>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=5">5</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=5">5</a>
 					</div>
 				</nav>
 			<%} %>
@@ -457,10 +441,10 @@ obj = list.get(i);
 			<%if(num==5){ %>
 				<nav class="cp_navi">
 					<div class="cp_pagination">
-						<a class="cp_pagenum" href="OkLogin.jsp?param=1">1</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=2">2</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=3">3</a>
-						<a class="cp_pagenum" href="OkLogin.jsp?param=4">4</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=1">1</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=2">2</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=3">3</a>
+						<a class="cp_pagenum" href="OkRental.jsp?param=4">4</a>
 						<span aria-current="page" class="cp_pagenum current">5</span>
 					</div>
 				</nav>
@@ -469,4 +453,7 @@ obj = list.get(i);
  <%} %>
 </body>
 </html>
+
+
+
 

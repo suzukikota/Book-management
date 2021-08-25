@@ -11,24 +11,24 @@ public class Employee_InfoBean {
 
 	private String employee_id;
 	private String name;
-	private String delete_date;
 	private String mail;
+	private String delete_date;
 
 	public Employee_InfoBean() {}
-	public Employee_InfoBean(String employee_id,String name,String delete_date,String mail) {
+	public Employee_InfoBean(String employee_id,String name,String mail, String delete_date) {
 		this.employee_id=employee_id;
 		this.name=name;
-		this.delete_date=delete_date;
 		this.mail=mail;
+		this.delete_date=delete_date;
 	}
 
 	public String getEmployee_id() {return employee_id;}
 	public String getName() {return name;}
-	public String delete_date() {return delete_date;}
 	public String getMail() {return mail;}
+	public String delete_date() {return delete_date;}
 
 	@SuppressWarnings("resource")
-	public List<Employee_InfoBean> Employee_InfoDBtoList(String selectId,String id, String names, String btn){
+	public List<Employee_InfoBean> Employee_InfoDBtoList(String selectId,String id, String names, String mails, String btn, int offset){
 		List<Employee_InfoBean> list = new ArrayList<Employee_InfoBean>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -36,34 +36,40 @@ public class Employee_InfoBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql ="select * from employee_info where delete_date != '削除'  order by cast(employee_id as int)";
+			String sql ="select * from employee_info where delete_date != '削除'  order by cast(employee_id as int) limit 30 offset ?";
 			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, offset);
+
+
 
 
 			if(btn.equals("delete")) {
-				sql = "update employee_info set delete_date = '削除'  where employee_id = ? ";
+				sql = "update employee_info set delete_date = '削除' where employee_id = ? ";
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, selectId);
 				ps.executeUpdate();
 			}
 
 			if(btn.equals("追加")) {
-				sql = "insert into employee_info (employee_id,name,delete_date) values (?, ?, ?)";
+				sql = "insert into employee_info (employee_id,name,mail,delete_date) values (?, ?, ?, ?)";
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, id);
 				ps.setString(2, names);
-				ps.setString(3, "");
+				ps.setString(3, mails);
+				ps.setString(4, "");
 				ps.executeUpdate();
 			}
 
-			sql ="select * from employee_info where delete_date != '削除'  order by cast(employee_id as int)";
+			sql ="select * from employee_info where delete_date != '削除'  order by cast(employee_id as int) limit 30 offset ?";
 			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, offset);
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {
 				String employee_id = rs.getString("employee_id");
 				String name = rs.getString("name");
-				list.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
+				String mail = rs.getString("mail");
+				list.add(new Employee_InfoBean(employee_id,name,mail,delete_date));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -93,8 +99,9 @@ public class Employee_InfoBean {
 			while(rs.next()) {
 				String employee_id = rs.getString("employee_id");
 				String name = rs.getString("name");
+				String mail = rs.getString("mail");
 
-				list2.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
+				list2.add(new Employee_InfoBean(employee_id,name,mail,delete_date));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -126,7 +133,7 @@ public class Employee_InfoBean {
 			while(rs.next()) {
 				String mail = rs.getString("mail");
 
-				list.add(new Employee_InfoBean(employee_id,name,delete_date,mail));
+				list.add(new Employee_InfoBean(employee_id,name,mail,delete_date));
 				}
 			}catch(Exception e) {
 				e.printStackTrace();

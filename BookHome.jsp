@@ -20,7 +20,6 @@ header {
 	color: #000000;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 body {
 	margin: 0;
 	padding: 0;
@@ -31,23 +30,19 @@ body {
 	background-attachment: fixed;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 button:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 p {
 	color: red;
 	font-size: 16px;
 	font-weight: 600;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search {
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search2 {
 	height: 23px;
 	background: #668ad8;
@@ -55,12 +50,10 @@ p {
 	border-bottom: solid 2px #627295;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search2:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 table {
 	height: 40px;
 	table-layout: fixed;
@@ -109,7 +102,6 @@ table {
 	top: 34px;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 /* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;

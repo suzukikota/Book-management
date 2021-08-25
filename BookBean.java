@@ -43,7 +43,7 @@ public class BookBean {
 	public String delete_date() {return delete_date;}
 	public String yomi() {return yomi;}
 
-//	(閲覧用)検索無し　書籍一覧の表示
+	//	(閲覧用)検索無し　書籍一覧の表示
 	public List<BookBean> BookBeanDBtoList(int offset){
 		List<BookBean> list = new ArrayList<BookBean>();
 		Connection con = null;
@@ -146,7 +146,7 @@ public class BookBean {
 
 	//		(管理用)書籍一覧の表示用
 	@SuppressWarnings("resource")
-	public List<BookBean> BookBeanDBtoList3(String btn, String selectId, String selectIsbn, String selectTitle,String selectGenre, String selectPublisher, String selectStatus, String selectRental, String selectBorrow_date, String selectYomi,String change){
+	public List<BookBean> BookBeanDBtoList3(String btn, String selectId, String selectIsbn, String selectTitle,String selectGenre, String selectPublisher, String selectStatus, String selectRental, String selectBorrow_date, String selectYomi,String change,int offset){
 		List<BookBean> list = new ArrayList<BookBean>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -154,11 +154,12 @@ public class BookBean {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
 
-			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date from borrow left join book on borrow.isbn = book.isbn where delete_date != '削除' order by status desc, genre desc, cast(yomi as char)";
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date from borrow left join book on borrow.isbn = book.isbn where delete_date != '削除' order by status desc, genre desc, cast(yomi as char) limit 30 offset ?";
 			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, offset);
 
 			if(btn.equals("delete")) {
-				sql = "update borrow set delete_date = '削除' where isbn = ? ";
+				sql = "update borrow set delete_date = '削除',borrow_date = '' where isbn = ? ";
 				ps = con.prepareStatement(sql.toString());
 				ps.setString(1, selectId);
 				ps.executeUpdate();
@@ -219,8 +220,23 @@ public class BookBean {
 				ps.executeUpdate();
 			}
 
-			sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date from borrow left join book on borrow.isbn = book.isbn where delete_date != '削除' order by status desc, genre desc, cast(yomi as char)";
+			if(btn.equals("更新")) {
+				sql = "update borrow set borrow_date = '' where status = 'レンタル可'"; //変更
+				ps =con.prepareStatement(sql.toString());
+				ps.executeUpdate();
+			}
+
+			if(btn.equals("更新")) {
+				sql = "update book a,borrow b set a.rental = b.borrow_date where a.isbn = b.isbn and b.status = 'レンタル可';"; //変更
+				ps =con.prepareStatement(sql.toString());
+				ps.executeUpdate();
+			}
+
+
+
+			sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status,book.rental,borrow.borrow_date from borrow left join book on borrow.isbn = book.isbn where delete_date != '削除' order by status desc, genre desc, cast(yomi as char) limit 30 offset ?";
 			ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, offset);
 			ResultSet rs = ps.executeQuery();
 
 			while(rs.next()) {
@@ -248,7 +264,7 @@ public class BookBean {
 		return list;
 	}
 
-    //	(管理用)検索あり　検索にヒットする書籍一覧表示用
+	//	(管理用)検索あり　検索にヒットする書籍一覧表示用
 	//	引数にkeyword
 	public List<BookBean> BookBeanDBtoList4(String keyword){
 		List<BookBean> list4 = new ArrayList<BookBean>();
@@ -286,7 +302,7 @@ public class BookBean {
 		return list4;
 	}
 
-	//	レンタル申請画面へ遷移した際の、書籍番号と書籍名を取得するメソッド
+//	レンタル申請画面へ遷移した際の、書籍番号と書籍名を取得するメソッド
 	public List<BookBean> Rental(String isbn){
 		List<BookBean> list = new ArrayList<BookBean>();
 		Connection con = null;
@@ -409,15 +425,7 @@ public class BookBean {
 			ps.setInt(1, offset);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				String isbn = rs.getString("isbn");
-				String title = rs.getString("title");
-				String genre = rs.getString("genre");
-				String publisher = rs.getString("publisher");
-				String status = rs.getString("status");
-				String rental = rs.getString("rental");
-				String borrow_date = rs.getString("borrow_date");
-				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
-			}
+}
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
