@@ -334,11 +334,10 @@ obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出�
 		       		<option value="レンタル可">レンタル可</option>
 			        <%}else if(status2.contains("返却承認待ち")){%>
 			        	<option value="レンタル可">レンタル可</option>
-				        <%}else{%>
+				        <%}else if(status2.contains("レンタル承認待ち")){%>
 				       		<option value="レンタル中">レンタル中</option>
-				   	    <%} %>
+				   	    <%}%>
 		   	</select>
-
 		   	<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
 			<input type="submit" name ="btn" value="更新">
 		</form>
@@ -392,9 +391,9 @@ obj = list.get(i);
 		       		<option value="レンタル可">レンタル可</option>
 			        <%}else if(status2.contains("返却承認待ち")){%>
 			        	<option value="レンタル可">レンタル可</option>
-				        <%}else{%>
+				        <%}else if(status2.contains("レンタル承認待ち")){%>
 				       		<option value="レンタル中">レンタル中</option>
-				   	    <%} %>
+				   	    <%}%>
 		   	</select>
 		   		<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
 				<input type="submit" name ="btn" value="更新" >
