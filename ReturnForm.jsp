@@ -16,6 +16,19 @@
 <meta name="viewport"
 	content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>返却申請ページ</title>
+
+<script type="text/javascript">
+function check(){
+	if(window.confirm('返却の申請をしてもよろしいですか？'+'\r\n'+'申請内容に誤りがないかご確認下さい。')){ // 確認ダイアログを表示
+		return true; // 「OK」時は送信を実行
+	}
+	else{ // 「キャンセル」時の処理
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false; // 送信を中止
+	}
+}
+</script>
+
 <style>
 body {
 	font-size: 17px;
@@ -71,6 +84,7 @@ body {
 </head>
 
 <body>
+	<button class="btn-square" onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 <!-- 	今日の日付を取得 -->
 		<%
 			Date dateObj = new Date();
@@ -81,7 +95,6 @@ body {
 	<div class="return">
 		<h2>書籍返却申請画面</h2>
 		<form action="#" method="post">
-			<!-- 		フォームの送り先は一旦#で保留 -->
 			<p>
 				書籍番号:<input type="text" name="isbn" placeholder="例1234567891234"
 					pattern="\d{13}" title="13桁の数字で入力してください">
@@ -98,27 +111,15 @@ body {
 			</p>
 		</form>
 
-		<form action="SendReturnMail" method="post">
+		<form action="SendReturnMail" method="post" onSubmit="return check()">
 			<%
 				List<BookBean> list = obj.Rental(isbn);
 				for (int i = 0; i < list.size(); i++) {
 					obj = list.get(i);
 			%>
 			<p>
-				申請者名:<select name="employee">
-
-					<%
-						List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
-							for (int j = 0; j < list2.size(); j++) {
-								obj2 = list2.get(j);
-					%>
-					<%=obj2.getName()%>
-					<option value=<%=obj2.getName()%>><%=obj2.getName()%></option>
-					<%
-						}
-					%>
-				</select>
-			</p>
+				申請者名(借用者名):<%=obj.getRental() %></p>
+				<%session.setAttribute("employee", obj.getRental()); %>
 			<p>
 				書籍番号:<%=obj.getIsbn()%></p>
 			<p>
@@ -131,6 +132,8 @@ body {
 			<br> <input type="submit" value="申請ボタン" class="btn-square">
 		</form>
 		<%} %>
+		<!-- 申請後に数日経っても承認又は否認のメールが届かない場合は、<br>
+		お手数ですが、総務までご連絡をお願いいたします。 -->
 	</div>
 </body>
 </html>

@@ -66,7 +66,8 @@ public class SendRentalApproval extends HttpServlet {
         				+ "書籍名:"+selectTitle+"\r\n"
         				+ "レンタルの申請を承りました。"+"\r\n"
         				+ "次の帰社日にお受け取り下さい。"+"\r\n"
-        				+ "よろしくお願いいたします";
+        				+ "よろしくお願いいたします"+"\r\n"
+        				+ "※このメール内容に心あたりのない場合は、お手数ですが、総務までご連絡をお願いいたします。";
 
         response.setContentType("text/html; charset=UTF-8");
 
@@ -148,7 +149,8 @@ public class SendRentalApproval extends HttpServlet {
             				+ "申請者名:"+selectName +"さん"+"\r\n"
             				+ "書籍名:"+selectTitle+"\r\n"
             				+ "レンタルの申請を承ることが出来ませんでした。"+"\r\n"
-            				+ "よろしくお願いいたします。";
+            				+ "よろしくお願いいたします。"+"\r\n"
+            				+ "※このメール内容に心あたりのない場合は、お手数ですが、総務までご連絡をお願いいたします。";
 
             response.setContentType("text/html; charset=UTF-8");
 

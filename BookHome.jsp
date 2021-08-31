@@ -1,3 +1,4 @@
+<%@page import="java.awt.print.Book"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
@@ -5,6 +6,7 @@
 <%@ page import="bean.*"%>
 <%@ page import="java.net.URLEncoder"%>
 <jsp:useBean id="obj" class="bean.BookBean" />
+<jsp:useBean id="obj2" class="bean.Employee_InfoBean" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +22,7 @@ header {
 	color: #000000;
 	font-family: 'Noto Sans JP', sans-serif;
 }
+
 body {
 	margin: 0;
 	padding: 0;
@@ -30,19 +33,23 @@ body {
 	background-attachment: fixed;
 	font-family: 'Noto Sans JP', sans-serif;
 }
+
 button:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
+
 p {
 	color: red;
 	font-size: 16px;
 	font-weight: 600;
 	font-family: 'Noto Sans JP', sans-serif;
 }
+
 .search {
 	font-family: 'Noto Sans JP', sans-serif;
 }
+
 .search2 {
 	height: 23px;
 	background: #668ad8;
@@ -50,10 +57,12 @@ p {
 	border-bottom: solid 2px #627295;
 	font-family: 'Noto Sans JP', sans-serif;
 }
+
 .search2:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
+
 table {
 	height: 40px;
 	table-layout: fixed;
@@ -102,6 +111,7 @@ table {
 	top: 34px;
 	font-family: 'Noto Sans JP', sans-serif;
 }
+
 /* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;
@@ -198,6 +208,48 @@ nav.cp_navi {
 
 	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
 
+<div class="searchbookform">
+	<form action="BookHome.jsp" method="post">
+		<select name="rental" style="height:23px;">
+			<%List<Employee_InfoBean> list2 = obj2.Employee_InfoDBtoList2();
+				for(int i = 0; i<list2.size();i++){
+					obj2 = list2.get(i);%>
+				<option value="<%=obj2.getName()%>"><%=obj2.getName()%></option><%}%>
+		</select>
+		<input class="search2" type="submit" value="🔍 レンタル書籍の確認">
+	</form>
+</div>
+
+<%String Rental=request.getParameter("rental");%>
+<%List<BookBean> list3 = obj.SearchRentalBook(Rental);
+	int total = list3.size();%>
+
+<%if(Rental!=null && total>=1){%>
+<table class="table" border="1">
+	<tr>
+		<th>書籍番号</th>
+		<th>書籍名</th>
+	</tr>
+</table>
+
+<%List<BookBean> list4 = obj.SearchRentalBook(Rental);
+	for(int i=0;i<list4.size();i++){
+		obj= list4.get(i);%>
+
+		<table class="table" border="1">
+			<tr>
+				<td><%=obj.getIsbn() %></td>
+				<td><%=obj.getTitle() %></td>
+			</tr><br>
+		</table><%}}else if (Rental!=null){%>
+			<table class="table" border="1">
+				<tr>
+					<th><%=Rental%>さんが現在お借りしている書籍はありません。</th>
+				</tr>
+				<br>
+			</table>
+		<%}%>
+
 <div class="searchform">
 	<form class="search" action="BookHome2.jsp" method="post">
 		<!-- 	書籍名の検索<br> -->
@@ -219,12 +271,12 @@ nav.cp_navi {
 	</form>
 </div>
 
-	<%String keyword = request.getParameter("keyword");%>
+	<%-- <%String keyword = request.getParameter("keyword");%> --%>
 	<%String Genre = request.getParameter("genre");%>
 	<%String param=request.getParameter("param"); %>
 	<%int offset; %>
 
-	<%if(keyword==null){%>
+	<%-- <%if(keyword==null){%> --%>
 	<%if(param==null){ %>
 	<%offset=0; %>
 	<br>
@@ -351,6 +403,5 @@ nav.cp_navi {
 				</nav>
 			<%} %>
 	<%} %>
-	<%}%>
 </body>
 </html>

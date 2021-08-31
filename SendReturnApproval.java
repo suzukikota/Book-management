@@ -69,7 +69,8 @@ public class SendReturnApproval extends HttpServlet {
         				+ "書籍名:"+selectTitle+"\r\n"
         				+ "返却の申請を承りました。"+"\r\n"
         				+ "次の帰社日にご返却下さい。"+"\r\n"
-        				+ "よろしくお願いいたします。";
+        				+ "よろしくお願いいたします。"+"\r\n"
+        				+ "※このメール内容に心あたりのない場合は、お手数ですが、総務までご連絡をお願いいたします。";
 
         response.setContentType("text/html; charset=UTF-8");
 
@@ -153,7 +154,8 @@ public class SendReturnApproval extends HttpServlet {
 	        				+ "申請者名:"+selectName+"さん"+"\r\n"
 	        				+ "書籍名:"+selectTitle+"\r\n"
 	        				+ "返却の申請を承ることが出来ませんでした。"+"\r\n"
-	           				+ "よろしくお願いいたします。";
+	           				+ "よろしくお願いいたします。"+"\r\n"
+	        				+ "※このメール内容に心あたりのない場合は、お手数ですが、総務までご連絡をお願いいたします。";
 
 	        response.setContentType("text/html; charset=UTF-8");
 

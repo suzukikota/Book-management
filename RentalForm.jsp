@@ -17,6 +17,19 @@
 <meta name="viewport"
 	content="width=device-width,user-scalable=no,maximum-scale=1" />
 <title>レンタル申請ページ</title>
+
+<script type="text/javascript">
+function check(){
+	if(window.confirm('レンタルの申請をしてもよろしいですか？'+'\r\n'+'申請内容に誤りがないかご確認下さい。')){ // 確認ダイアログを表示
+		return true; // 「OK」時は送信を実行
+	}
+	else{ // 「キャンセル」時の処理
+		window.alert('キャンセルされました'); // 警告ダイアログを表示
+		return false; // 送信を中止
+	}
+}
+</script>
+
 <style>
 /* 	body全体の装飾 */
 body {
@@ -58,7 +71,7 @@ body {
 </style>
 </head>
 <body>
-
+	<button class="btn-square" onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 	<!-- 	選択された書籍のISBNを取得 -->
 	<%
 		String isbn = request.getParameter("isbn");
@@ -87,7 +100,7 @@ body {
 		<h2>書籍レンタル申請画面</h2>
 		<br>
 
-		<form action="SendRentalMail" method="post">
+		<form action="SendRentalMail" method="post" onSubmit="return check()">
 			<p>
 				申請者名:<select name="employee">
 					<%
@@ -95,9 +108,7 @@ body {
 						for (int j = 0; j < list2.size(); j++) {
 							obj2 = list2.get(j);
 					%>
-					<%=obj2.getName()%>
-
-					<option value=<%=obj2.getName()%>><%=obj2.getName()%></option>
+					<option value="<%=obj2.getName()%>"><%=obj2.getName()%></option>
 					<%
 						}
 					%>
@@ -116,6 +127,8 @@ body {
 			<input required type="date" name="rental" min=<%=display%>> <input
 				type="submit" value="申請ボタン" class="btn-square">
 		</form>
+		申請後に数日経っても承認又は否認のメールが届かない場合は、<br>
+		お手数ですが、総務までご連絡をお願いいたします。
 	</div>
 </body>
 </html>

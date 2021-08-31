@@ -425,16 +425,16 @@ public class BookBean {
 			ps.setInt(1, offset);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-			String isbn = rs.getString("isbn");
-			String title = rs.getString("title");
-			String genre = rs.getString("genre");
-			String publisher = rs.getString("publisher");
-			String status = rs.getString("status");
-			String rental = rs.getString("rental");
-			String borrow_date = rs.getString("borrow_date");
-			list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
-
+				String isbn = rs.getString("isbn");
+				String title = rs.getString("title");
+				String genre = rs.getString("genre");
+				String publisher = rs.getString("publisher");
+				String status = rs.getString("status");
+				String rental = rs.getString("rental");
+				String borrow_date = rs.getString("borrow_date");
+				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
 			}
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -616,6 +616,38 @@ public class BookBean {
 				String publisher = rs.getString("publisher");
 				String status = rs.getString("status");
 
+				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) { ps.close();}
+				if (con != null) { con.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	public List<BookBean> SearchRentalBook(String Rental){
+		List<BookBean> list = new ArrayList<BookBean>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			Driver.class.getDeclaredConstructor().newInstance();
+			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
+
+			String sql="select book.isbn,book.title,book.genre,book.publisher,borrow.status from borrow join book on borrow.isbn = book.isbn "
+			+ "where status = 'ƒŒƒ“ƒ^ƒ‹’†' and rental = ? order by genre desc, yomi ";
+			ps = con.prepareStatement(sql.toString());
+			ps.setString(1, Rental);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String isbn = rs.getString("isbn");
+				String title = rs.getString("title");
+				String genre = rs.getString("genre");
+				String publisher = rs.getString("publisher");
 				list.add(new BookBean(isbn,title,genre,publisher,status,rental,borrow_date,delete_date,yomi));
 			}
 		}catch (Exception e) {

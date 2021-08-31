@@ -5,6 +5,7 @@
 <%@ page import="bean.*"%>
 <%@ page import="java.net.URLEncoder"%>
 <jsp:useBean id="obj" class="bean.BookBean" />
+<jsp:useBean id="obj2" class="bean.Employee_InfoBean" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -216,6 +217,18 @@ nav.cp_navi {
 
 	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
 
+	<div class="searchbookform">
+	<form action="BookHome.jsp" method="post">
+		<select name="rental" style="height:23px;">
+			<%List<Employee_InfoBean> list3 = obj2.Employee_InfoDBtoList2();
+				for(int i = 0; i<list3.size();i++){
+					obj2 = list3.get(i);%>
+				<option value="<%=obj2.getName()%>"><%=obj2.getName()%></option><%}%>
+		</select>
+		<input class="search2" type="submit" value="🔍 レンタル書籍の確認">
+	</form>
+</div>
+
 <dic class="searchform">
 	<form class="search" action="BookHome2.jsp" method="post">
 		<!-- 	書籍名の検索<br> -->
@@ -265,7 +278,6 @@ nav.cp_navi {
 	<%List<BookBean> list2 = obj.BookBeanDBtoList5(keyword, Genre);
 		int total =list2.size();
 		%>
-	<%=total %>
 	<%session.setAttribute("total", total); %>
 
 	<%List<BookBean> list = obj.BookBeanDBtoList2(keyword,Genre,offset);
