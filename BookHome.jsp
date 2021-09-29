@@ -12,17 +12,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-	content="width=device-width,user-scalable=no,maximum-scale=1" />
+	content="width=device-width,user-scalable=yes,maximum-scale=1" />
 <title>書籍管理ホーム</title>
 <style>
 header {
 	width: 100%;
-	padding: 10px 10px;
+	padding: 10px 0px 10px 0px;
 	background-color: rgba(220, 220, 220, 0.9);
 	color: #000000;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 body {
 	margin: 0;
 	padding: 0;
@@ -33,23 +32,19 @@ body {
 	background-attachment: fixed;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 button:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 p {
 	color: red;
 	font-size: 16px;
 	font-weight: 600;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search {
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search2 {
 	height: 23px;
 	background: #668ad8;
@@ -57,13 +52,22 @@ p {
 	border-bottom: solid 2px #627295;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search2:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 table {
+	height: 40px;
+	table-layout: fixed;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFF;
+	border-radius: 5px;
+	border: solid 3px #6091d3;
+}
+/* 	借用者検索テーブルの装飾 */
+.table2 {
 	height: 40px;
 	table-layout: fixed;
 	width: 80%;
@@ -111,7 +115,6 @@ table {
 	top: 34px;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 /* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;
@@ -192,6 +195,47 @@ nav.cp_navi {
 		content: none;
 	}
 }
+
+@media screen and (max-width: 1024px) {
+	/* 1024px以下に適用されるCSS（タブレット用） */
+	table {
+		width: 100%;
+}
+	body {
+		font-size: 14px;
+	}
+}
+@media screen and (max-width: 480px) {
+	/* 480px以下に適用されるCSS（スマホ用） */
+	/* 	管理者ログインの装飾 */
+	body {
+		font-size: 10px;
+	}
+	h1{
+		font-size: 20px;
+	}
+	p{
+		font-size: 8px;
+	}
+	.btn-square {
+		width: 30px;
+		font-size: 5px;
+		text-align:center;
+	}
+	.btn-square3 {
+		width: 80px;
+		font-size: 3px;
+		right: 10px;
+		top: 15px;
+	}
+	.table{
+		word-wrap: break-word
+	}
+	.table2 {
+		word-wrap: break-word
+	}
+}
+
 </style>
 </head>
 
@@ -219,15 +263,15 @@ nav.cp_navi {
 		<input class="search2" type="submit" value="🔍 レンタル書籍の確認">
 	</form>
 </div>
-
+<br>
 <%String Rental=request.getParameter("rental");%>
 <%List<BookBean> list3 = obj.SearchRentalBook(Rental);
 	int total = list3.size();%>
 
 <%if(Rental!=null && total>=1){%>
-<table class="table" border="1">
+<table class="table2" border="1">
 	<tr>
-		<th>書籍番号</th>
+		<th width = 30%>書籍番号</th>
 		<th>書籍名</th>
 	</tr>
 </table>
@@ -236,9 +280,9 @@ nav.cp_navi {
 	for(int i=0;i<list4.size();i++){
 		obj= list4.get(i);%>
 
-		<table class="table" border="1">
+		<table class="table2" border="1">
 			<tr>
-				<td><%=obj.getIsbn() %></td>
+				<td width = 30%><%=obj.getIsbn() %></td>
 				<td><%=obj.getTitle() %></td>
 			</tr><br>
 		</table><%}}else if (Rental!=null){%>
@@ -271,16 +315,14 @@ nav.cp_navi {
 	</form>
 </div>
 
-	<%-- <%String keyword = request.getParameter("keyword");%> --%>
 	<%String Genre = request.getParameter("genre");%>
 	<%String param=request.getParameter("param"); %>
 	<%int offset; %>
 
-	<%-- <%if(keyword==null){%> --%>
 	<%if(param==null){ %>
 	<%offset=0; %>
 	<br>
-
+<div class="scroll-table">
 	<table class="table" border="1">
 		<tr>
 			<th>書籍番号</th>
@@ -305,13 +347,15 @@ nav.cp_navi {
 			<%String status=obj.getStatus(); %>
 			<%if(status.contains("レンタル可")){ %>
 			<td width=8%><button
-					onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
+					<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+					onclick="location.href='RentalForm.jsp?title=<%=encodeStr %>'"
 					class="btn-square">申請</button> <%}else{ %>
 			<td width=8%>申請不可</td>
 			<%} %>
 		</tr>
 		<br>
 	</table>
+</div>
 	<%}%>
 	<nav class="cp_navi">
 	<div class="cp_pagination">
@@ -350,7 +394,8 @@ nav.cp_navi {
 			<%String status=obj.getStatus(); %>
 			<%if(status.contains("レンタル可")){ %>
 			<td width=8%><button
-					onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
+					<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+					onclick="location.href='RentalForm.jsp?title=<%=encodeStr %>'"
 					class="btn-square">申請</button> <%}else{ %>
 			<td width=8%>申請不可</td>
 			<%} %>

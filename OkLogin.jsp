@@ -238,7 +238,6 @@ function check(){
 			param = "1";
 		}
 
-
 		int offset=0; %>
 
 <button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
@@ -247,9 +246,9 @@ function check(){
 
 <form action="OkLogin.jsp" method="POST">
 <div style="display:inline-flex">
-    <p>書籍番号<br><input type="text" name="isbn" pattern="\d{13}" title="13桁の数字"  required></p>
+    <p>書籍番号<br><input type="text" name="isbn" pattern="\d{13}" title="13桁の半角数字"  required></p>
 	<p>書籍名<br><input type="text" name="title" required></p>
-	<p>読み仮名<br><input type="text" name="yomi" pattern="[^一-龥]{2,}" title="2文字以上の英数字、平仮名" required></p>
+	<p>ふりがな<br><input type="text" name="yomi" pattern="[^一-龥]{2,}" title="2文字以上の英数字、平仮名" required></p>
 	<p>ジャンル<br><select name="genre">
 		<option value="資格・検定">資格・検定</option>
 		<option value="人工知能">人工知能</option>
@@ -309,7 +308,7 @@ function check(){
       <th width="13%">出版社</th>
       <th width="12%">ステータス</th>
       <th width="10%">借用者</th>
-      <th width="10%">レンタル日</th>
+      <th width="10%">レンタル日<br>返却日</th>
       <th width="5%">削除</th>
  </tr>
  </table>
@@ -338,14 +337,15 @@ obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出�
 				       		<option value="レンタル中">レンタル中</option>
 				   	    <%}%>
 		   	</select>
-		   	<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
+		   	<input type="hidden" name ="title" value ="<%=obj.getTitle()%>">
 			<input type="submit" name ="btn" value="更新">
 		</form>
 	  </td>
       <td width="10%"><%= obj.getRental() %></td>
       <td width="10%"><%= obj.getBorrow_date() %></td>
       <td width="5%">
-	      <form method="POST" action="OkLogin.jsp?linkid=<%= obj.getIsbn() %>&btn=delete" onSubmit="return check()">
+          <%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+	      <form method="POST" action="OkLogin.jsp?LinkTitle=<%=encodeStr %>&btn=delete" onSubmit="return check()">
 			<button type="submit" value="送信">削除</button>
 	      </form>
       </td>
@@ -367,12 +367,12 @@ obj = list4.get(i);	//get()メソッドでArrayListから1件データを取出�
       <th width="13%">出版社</th>
       <th width="12%">ステータス</th>
       <th width="10%">借用者</th>
-      <th width="10%">レンタル日</th>
+      <th width="10%">レンタル日<br>返却日</th>
       <th width="5%">削除</th>
  </tr>
  </table>
 <%
-List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("linkid"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"),request.getParameter("yomi"),request.getParameter("changes"),offset);
+List<BookBean> list = obj.BookBeanDBtoList3(btn,request.getParameter("LinkTitle"),request.getParameter("isbn"),request.getParameter("title"),request.getParameter("genre"),request.getParameter("publisher"),request.getParameter("status"),request.getParameter("employee"),request.getParameter("borrow_date"),request.getParameter("yomi"),request.getParameter("changes"),offset);
 for(int i = 0; i < list.size(); i++){
 obj = list.get(i);
 %>
@@ -395,14 +395,15 @@ obj = list.get(i);
 				       		<option value="レンタル中">レンタル中</option>
 				   	    <%}%>
 		   	</select>
-		   		<input type="hidden" name ="isbn" value ="<%=obj.getIsbn()%>">
+		   		<input type="hidden" name ="title" value ="<%=obj.getTitle()%>">
 				<input type="submit" name ="btn" value="更新" >
 		</form>
 	</td>
       <td width="10%"><%= obj.getRental() %></td>
       <td width="10%"><%= obj.getBorrow_date() %></td>
       <td width="5%">
-		  <form method="POST" action="OkLogin.jsp?linkid=<%= obj.getIsbn() %>&btn=delete" onSubmit="return check()">
+          <%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+		  <form method="POST" action="OkLogin.jsp?LinkTitle=<%=encodeStr %>&btn=delete" onSubmit="return check()">
 			<button type="submit" value="送信">削除</button>
 	      </form>
       </td>

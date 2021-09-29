@@ -1,3 +1,4 @@
+
 package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +36,7 @@ public class SendReturnApproval extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session2 = request.getSession();
-		String isbn = request.getParameter("isbn");
+		String title = request.getParameter("title");
 		String btn = request.getParameter("btn");
 		String test = (String) session2.getAttribute("borrow_date");
 
@@ -43,9 +44,9 @@ public class SendReturnApproval extends HttpServlet {
 		if(btn.equals("approval")) {
 
 		BookBean bookBean=new BookBean();
-		bookBean.UpdateReturnWating(btn, isbn,test);
+		bookBean.UpdateReturnWating(btn, title,test);
 
-		List<BookBean> list=bookBean.Rental(isbn);
+		List<BookBean> list=bookBean.Rental(title);
 		for(int i=0;i<list.size();i++) {
 			bookBean=list.get(i);
 		}
@@ -61,7 +62,7 @@ public class SendReturnApproval extends HttpServlet {
 
 		String mail=employee_InfoBean.getMail();
 
-		String title = "書籍の返却申請の承認";//メールのタイトル
+		String EmailTitle = "書籍の返却申請の承認";//メールのタイトル
 
         String message = "書籍の返却申請の承認を受け取りました。"+"\r\n"//メールの本文(書籍や申請者を情報として組み込む)
         				+ "こちらは自動送信になります。"+"\r\n"
@@ -104,7 +105,7 @@ public class SendReturnApproval extends HttpServlet {
 
             mimeMessage.setFrom(fromAddress);
 
-            mimeMessage.setSubject(title, "ISO-2022-JP");
+            mimeMessage.setSubject(EmailTitle, "ISO-2022-JP");
 
             mimeMessage.setText(message,"ISO-2022-JP");
 
@@ -130,9 +131,9 @@ public class SendReturnApproval extends HttpServlet {
 		}else if(btn.equals("rejection")) {
 
 			BookBean bookBean=new BookBean();
-			bookBean.UpdateReturnWating(btn, isbn,test);
+			bookBean.UpdateReturnWating(btn, title,test);
 
-			List<BookBean> list=bookBean.Rental(isbn);
+			List<BookBean> list=bookBean.Rental(title);
 			for(int i=0;i<list.size();i++) {
 				bookBean=list.get(i);
 			}
@@ -147,7 +148,7 @@ public class SendReturnApproval extends HttpServlet {
 			}
 			String mail=employee_InfoBean.getMail();
 
-			String title = "書籍の返却申請の否認";
+			String EmailTitle = "書籍の返却申請の否認";
 
 	        String message = "書籍の返却申請の否認を受け取りました。"+"\r\n"
 	        				+ "こちらは自動送信になります。"+"\r\n"
@@ -189,7 +190,7 @@ public class SendReturnApproval extends HttpServlet {
 
 	            mimeMessage.setFrom(fromAddress);
 
-	            mimeMessage.setSubject(title, "ISO-2022-JP");
+	            mimeMessage.setSubject(EmailTitle, "ISO-2022-JP");
 
 	            mimeMessage.setText(message,"ISO-2022-JP");
 

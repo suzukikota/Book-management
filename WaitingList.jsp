@@ -19,12 +19,10 @@ body{
 	background-color:rgba(220, 220, 220, 0.9);
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 button:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 table {
 	height: 40px;
 	table-layout: fixed;
@@ -35,7 +33,6 @@ table {
 	border-radius: 5px;
 	border: solid 3px #6091d3;
 }
-
 .btn-square {
 	display: inline-block;
 	padding: 0.5em 1em;
@@ -46,7 +43,6 @@ table {
 	border-radius: 10px;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 button{
 		display:inline-block;
 		padding:0.5em 1em;
@@ -56,14 +52,12 @@ button{
 		border-bottom:solid 4px #627295;
 		border-radius:3px;
 		font-family: 'Noto Sans JP', sans-serif;
-
 		}
 .btn{
 	text-align:left;
 	left:300px;
 	top:25px;
 }
-
 /* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;
@@ -152,7 +146,6 @@ nav.cp_navi {
 		padding: 0 5px;
 	}
 }
-
 /* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;
@@ -253,14 +246,14 @@ nav.cp_navi {
 	<button onclick="location.href='EmployeeManagement.jsp'">社員管理</button>
 </div>
 
-<h2>(仮)書籍のレンタル・返却申請承認待ちリスト</h2>
+<h2>書籍のレンタル・返却申請承認待ちリスト</h2>
 
 <table class="table" border="1">
 	<tr>
 		<th>書籍番号</th>
 		<th width=32%>書籍名</th>
 		<th>申請者名</th>
-		<th width=10%>ステータス</th>
+		<th width=15%>ステータス</th>
 		<th>レンタル・返却日</th>
 		<th width=15%>承認ボタン</th>
 	</tr>
@@ -279,14 +272,15 @@ nav.cp_navi {
 			<td><%=obj.getIsbn() %></td>
 			<td width=32%><%=obj.getTitle() %></td>
 			<td><%=obj.getRental() %></td>
-			<td width=10%><%=obj.getStatus() %></td>
+			<td width=15%><%=obj.getStatus() %></td>
 			<td><%=obj.getBorrow_date() %></td>
+			<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
 			<%if(obj.getStatus().equals("レンタル承認待ち")){%>
-			<td width=15%><button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
-				<button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">否認</button>
+			<td width=15%><button onclick="location.href='SendRentalApproval?title=<%=encodeStr %>&btn=approval'" class="btn-square">承認</button>
+				<button onclick="location.href='SendRentalApproval?title=<%=encodeStr %>&btn=rejection'" class="btn-square">否認</button>
 			</td><%}else{%>
-			<td width=15%><button onclick="location.href='SendReturnApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
-				<button onclick="location.href='SendReturnApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">否認</button>
+			<td width=15%><button onclick="location.href='SendReturnApproval?title=<%=encodeStr %>&btn=approval'" class="btn-square">承認</button>
+				<button onclick="location.href='SendReturnApproval?title=<%=encodeStr %>&btn=rejection'" class="btn-square">否認</button>
 			<%} %></td>
 		</tr>
 	</table>
@@ -341,14 +335,15 @@ nav.cp_navi {
 			<td><%=obj.getIsbn() %></td>
 			<td width=32%><%=obj.getTitle() %></td>
 			<td><%=obj.getRental() %></td>
-			<td width=10%><%=obj.getStatus() %></td>
+			<td width=15%><%=obj.getStatus() %></td>
 			<td><%=obj.getBorrow_date() %></td>
+			<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
 			<%if(obj.getStatus().equals("レンタル承認待ち")){%>
-			<td width=15%><button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
-				<button onclick="location.href='SendRentalApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">否認</button>
+			<td width=15%><button onclick="location.href='SendRentalApproval?title=<%=encodeStr %>&btn=approval'" class="btn-square">承認</button>
+				<button onclick="location.href='SendRentalApproval?title=<%=encodeStr %>&btn=rejection'" class="btn-square">否認</button>
 			</td><%}else{%>
-			<td width=15%><button onclick="location.href='SendReturnApproval?isbn=<%=obj.getIsbn() %>&btn=approval'" class="btn-square">承認</button>
-				<button onclick="location.href='SendReturnApproval?isbn=<%=obj.getIsbn() %>&btn=rejection'" class="btn-square">否認</button>
+			<td width=15%><button onclick="location.href='SendReturnApproval?title=<%=encodeStr %>&btn=approval'" class="btn-square">承認</button>
+				<button onclick="location.href='SendReturnApproval?title=<%=encodeStr %>&btn=rejection'" class="btn-square">否認</button>
 			<%} %></td>
 		</tr>
 	</table>
@@ -434,7 +429,7 @@ nav.cp_navi {
 						</div>
 					</nav>
 				<%}%>
-				<%if(total>=31 && total<41){%>
+				<%if(total>=31 && total<41){%>s
 					<nav class="cp_navi">
 						<div class="cp_pagination">
 							<a class="cp_pagenum" href="WaitingList.jsp?param=1">1</a>

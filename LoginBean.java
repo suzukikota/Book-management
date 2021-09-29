@@ -20,7 +20,7 @@ public class LoginBean {
 		this.password = password;
 	}
 
-	public String getId() { return id; }// getterという。フィールドの値を返すだけだが、JSPから頻繁に利用される。
+	public String getId() { return id; }
 	public String getPassword() { return password; }
 
 	public List<LoginBean> DBtoList(String selectId,String selectPassword){
@@ -30,7 +30,6 @@ public class LoginBean {
 		try {
 			Driver.class.getDeclaredConstructor().newInstance();
 			con = DriverManager.getConnection("jdbc:mariadb://localhost/studyDB", "root", "");
-
 
 			String answer = "";
 
@@ -58,13 +57,10 @@ public class LoginBean {
 				if (con != null) { con.close();}
 			} catch (Exception e) {
 				e.printStackTrace();
-
-
 			}
 		}
 		return answer;
 	}
-
 }
 
 

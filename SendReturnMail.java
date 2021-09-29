@@ -35,24 +35,24 @@ public class SendReturnMail extends HttpServlet {
 		HttpSession session2 = request.getSession();
 		request.setCharacterEncoding("UTF-8");
 		String Return=request.getParameter("return");
-		String isbn=(String) session2.getAttribute("isbn");
-		String Title=(String) session2.getAttribute("Title");
+		String Isbn=(String) session2.getAttribute("Isbn");
+		String title=(String) session2.getAttribute("title");
 		String name=(String) session2.getAttribute("employee");
 
 		BookBean bookBean=new BookBean();
-		bookBean.UpdateBorrowStatus2(isbn, Return);//	statusを「返却承認待ち」にアップデート
+		bookBean.UpdateBorrowStatus2(title, Return);//	statusを「返却承認待ち」にアップデート
 
 
 
-		String title = "書籍の返却申請";//メールのタイトル
+		String MailTitle = "書籍の返却申請";//メールのタイトル
 
         String message = "書籍の返却申請を受け取りました。"+"\r\n"//メールの本文(書籍や申請者を情報として組み込む)
         		+ "こちらは自動送信になります。"+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+ "申請者名:"+name+"\r\n"
-        		+ "書籍番号:"+isbn+"\r\n"
-        		+ "書籍名:" +Title+"\r\n"
-        		+ "返却予定日:"+Return+"\r\n"
+        		+ "書籍番号:"+Isbn+"\r\n"
+        		+ "書籍名:" +title+"\r\n"
+        	    + "返却予定日:"+Return+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+"\r\n"
         		+"http://localhost:8080/BookManagement/WaitingList.jsp"+" (返却の承認へ進む)";
@@ -80,7 +80,7 @@ public class SendReturnMail extends HttpServlet {
             MimeMessage mimeMessage = new MimeMessage(session);
 
             InternetAddress toAddress =
-                    new InternetAddress("rt-mikami@sakura-communication.co.jp","さくら総務宛");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
+                    new InternetAddress("kt-suzuki@sakura-communication.co.jp","さくら総務宛");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
 
             mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 
@@ -89,7 +89,7 @@ public class SendReturnMail extends HttpServlet {
 
             mimeMessage.setFrom(fromAddress);
 
-            mimeMessage.setSubject(title, "ISO-2022-JP");
+            mimeMessage.setSubject(MailTitle, "ISO-2022-JP");
 
             mimeMessage.setText(message,"ISO-2022-JP");
 

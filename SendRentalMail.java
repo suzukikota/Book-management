@@ -35,13 +35,13 @@ public class SendRentalMail extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String rental=request.getParameter("rental");
 		session2.setAttribute("borrow_date", rental);
-		String isbn=(String) session2.getAttribute("isbn");
+		String Isbn=(String) session2.getAttribute("Isbn");
 		String Title=(String) session2.getAttribute("Title");
 		String name=request.getParameter("employee");
 
 		BookBean bookBean=new BookBean();
-		bookBean.UpdateBookRental(name, isbn);
-		bookBean.UpdateBorrowStatus(isbn, rental);
+		bookBean.UpdateBookRental(name, Title);
+		bookBean.UpdateBorrowStatus(Title, rental);
 
 		String title = "書籍のレンタル申請";//メールのタイトル
 
@@ -49,7 +49,7 @@ public class SendRentalMail extends HttpServlet {
         		+ "こちらは自動送信になります。"+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
         		+ "申請者名:"+name+"\r\n"
-        		+ "書籍番号:"+isbn+"\r\n"
+        		+ "書籍番号:"+Isbn+"\r\n"
         		+ "書籍名:" +Title+"\r\n"
         		+ "レンタル予定日:"+rental+"\r\n"
         		+"○●----------------------------------------------------●○"+"\r\n"
@@ -79,7 +79,7 @@ public class SendRentalMail extends HttpServlet {
             MimeMessage mimeMessage = new MimeMessage(session);
 
             InternetAddress toAddress =
-                    new InternetAddress("rt-mikami@sakura-communication.co.jp", "さくら総務宛");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
+                    new InternetAddress("kt-suzuki@sakura-communication.co.jp", "さくら総務宛");//	本番ではここにさくら総務宛先を入力する　("さくら総務宛のメールアドレス","さくら総務宛")//
 
             mimeMessage.setRecipient(Message.RecipientType.TO, toAddress);
 

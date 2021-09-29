@@ -171,6 +171,7 @@ function check(){
 <body>
 <button onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
 <button onclick="location.href='OkLogin.jsp'">書籍管理</button>
+<button onclick="location.href='WaitingList.jsp'">承認待ちリスト</button>
 
 <%	String employee_id = request.getParameter("employee_id");
 		if(employee_id == null){
@@ -194,7 +195,7 @@ function check(){
 
 	<form action="EmployeeManagement.jsp" method="POST">
 		<div style="display:inline-flex">
-			<p>社員番号<br><input type="text" name="employee_id" pattern="\d{6}" title="6桁の数字" required></p>
+			<p>社員番号<br><input type="text" name="employee_id" pattern="\d{6}" title="6桁の半角数字" required></p>
 			<p>氏名<br><input type="text" name="name" required></p>
 			<p>メールアドレス<br><input type="email" name="mail" class = "mail-form" value="@sakura-communication.co.jp" required></p>
 			</div><br>

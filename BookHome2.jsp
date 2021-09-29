@@ -16,12 +16,11 @@
 <style>
 header {
 	width: 100%;
-	padding: 10px 10px;
+	padding: 10px 0px 10px 0px;
 	background-color: rgba(220, 220, 220, 0.9);
 	color: #000000;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 body {
 	margin: 0;
 	padding: 0;
@@ -32,23 +31,19 @@ body {
 	background-attachment: fixed;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 button:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 p {
 	color: red;
 	font-size: 16px;
 	font-weight: 600;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search {
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search2 {
 	height: 23px;
 	background: #668ad8;
@@ -56,12 +51,10 @@ p {
 	border-bottom: solid 2px #627295;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .search2:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
-
 table {
 	height: 40px;
 	table-layout: fixed;
@@ -110,7 +103,6 @@ table {
 	top: 34px;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 /* 	ページング装飾 */
  nav.cp_navi *, nav.cp_navi *:after, nav.cp_navi *:before {
 	-webkit-box-sizing: border-box;
@@ -200,23 +192,55 @@ nav.cp_navi {
 	}
 }
 
+@media screen and (max-width: 1024px) {
+	/* 1024px以下に適用されるCSS（タブレット用） */
+	table {
+		width: 100%;
+}
+	body {
+		font-size: 14px;
+	}
+}
+@media screen and (max-width: 480px) {
+	/* 480px以下に適用されるCSS（スマホ用） */
+	/* 	管理者ログインの装飾 */
+	body {
+		font-size: 10px;
+	}
+	h1{
+		font-size: 20px;
+	}
+	p{
+		font-size: 8px;
+	}
+	.btn-square {
+		width: 30px;
+		font-size: 5px;
+		text-align:center;
+	}
+	.btn-square3 {
+		width: 80px;
+		font-size: 3px;
+		right: 10px;
+		top: 15px;
+	}
+	.table{
+	word-wrap: break-word
+	}
 
+}
 </style>
 </head>
 
 <body>
 	<header>
-		<h1><a href='BookHome.jsp'">さくら書籍管理</a></h1>
+		<h1><a href='BookHome.jsp'>さくら書籍管理</a></h1>
 		<button class="btn-square3" onclick="location.href='Login.jsp'">管理者ログイン</button>
-
-
 		<p>※会社経費による書籍購入には会社の決済承認が必要です
 		<p>
 			※経費での書籍購入者は、書籍名等を正確に総務部へ報告してください<br>
 	</header>
-
 	<button class="btn-square2" onclick="location.href='ReturnForm.jsp'">返却ボタン</button>
-
 	<div class="searchbookform">
 	<form action="BookHome.jsp" method="post">
 		<select name="rental" style="height:23px;">
@@ -283,7 +307,7 @@ nav.cp_navi {
 	<%List<BookBean> list = obj.BookBeanDBtoList2(keyword,Genre,offset);
 		for(int i=0;i<list.size();i++){
 			obj = list.get(i);%>
-	<table border="1">
+	<table class="table" border="1">
 		<tr>
 			<td><%=obj.getIsbn() %></td>
 			<td width=32%><%=obj.getTitle() %></td>
@@ -293,7 +317,8 @@ nav.cp_navi {
 			<%String status=obj.getStatus(); %>
 			<%if(status.contains("レンタル可")){ %>
 			<td width=8%><button
-					onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
+					<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+					onclick="location.href='RentalForm.jsp?title=<%=encodeStr %>'"
 					class="btn-square">申請</button> <%}else{ %>
 			<td width=8%>申請不可</td>
 			<%} %>
@@ -373,7 +398,8 @@ nav.cp_navi {
 				<%String status=obj.getStatus(); %>
 				<%if(status.contains("レンタル可")){ %>
 				<td width=8%><button
-						onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
+						<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+						onclick="location.href='RentalForm.jsp?title=<%=encodeStr %>'"
 						class="btn-square">申請</button> <%}else{ %>
 				<td width=8%>申請不可</td>
 				<%} %>
@@ -452,7 +478,8 @@ nav.cp_navi {
 
 			<%if(status.contains("レンタル可")){ %>
 			<td width=8%><button
-					onclick="location.href='RentalForm.jsp?isbn=<%=obj.getIsbn() %>'"
+					<%String encodeStr = URLEncoder.encode(obj.getTitle(), "utf-8");  %>
+					onclick="location.href='RentalForm.jsp?title=<%=encodeStr %>'"
 					class="btn-square">申請</button> <%}else{ %>
 			<td width=8%>申請不可</td>
 			<%} %>

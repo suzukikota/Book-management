@@ -34,16 +34,16 @@ public class SendRentalApproval extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String isbn = request.getParameter("isbn");
+		String title = request.getParameter("title");
 		String btn = request.getParameter("btn");
 
 		//	「承認」が選択された場合
 		if(btn.equals("approval")) {
 
 		BookBean bookBean=new BookBean();
-		bookBean.UpdateRentalWating(btn, isbn);
+		bookBean.UpdateRentalWating(btn, title);
 
-		List<BookBean> list=bookBean.Rental(isbn);
+		List<BookBean> list=bookBean.Rental(title);
 		for(int i=0;i<list.size();i++) {
 			bookBean=list.get(i);
 		}
@@ -58,7 +58,7 @@ public class SendRentalApproval extends HttpServlet {
 		}
 
 		String mail=employee_InfoBean.getMail();
-		String title = "書籍のレンタル申請の承認";
+		String EmailTitle = "書籍のレンタル申請の承認";
 
         String message = "書籍のレンタル申請の承認を受け取りました。"+"\r\n"
         				+ "こちらは自動送信になります。"+"\r\n"
@@ -101,7 +101,7 @@ public class SendRentalApproval extends HttpServlet {
 
             mimeMessage.setFrom(fromAddress);
 
-            mimeMessage.setSubject(title, "ISO-2022-JP");
+            mimeMessage.setSubject(EmailTitle, "ISO-2022-JP");
 
             mimeMessage.setText(message,"ISO-2022-JP");
 
@@ -128,7 +128,7 @@ public class SendRentalApproval extends HttpServlet {
     }else if(btn.equals("rejection")) {
     		BookBean bookBean=new BookBean();
 
-    		List<BookBean> list=bookBean.Rental(isbn);
+    		List<BookBean> list=bookBean.Rental(title);
     		for(int i=0;i<list.size();i++) {
     			bookBean=list.get(i);
     		}
@@ -142,7 +142,7 @@ public class SendRentalApproval extends HttpServlet {
     			employee_InfoBean=list2.get(i);
     		}
     		String mail=employee_InfoBean.getMail();
-    		String title = "書籍のレンタル申請の否認";
+    		String EmailTitle = "書籍のレンタル申請の否認";
 
             String message = "書籍のレンタル申請の否認を受け取りました。"+"\r\n"
             				+ "こちらは自動送信になります。"+"\r\n"
@@ -184,12 +184,12 @@ public class SendRentalApproval extends HttpServlet {
 
                 mimeMessage.setFrom(fromAddress);
 
-                mimeMessage.setSubject(title, "ISO-2022-JP");
+                mimeMessage.setSubject(EmailTitle, "ISO-2022-JP");
 
                 mimeMessage.setText(message,"ISO-2022-JP");
 
                 Transport.send(mimeMessage);
-                bookBean.UpdateRentalWating(btn, isbn);
+                bookBean.UpdateRentalWating(btn, title);
                 out.println("<htm><body>");
                 out.println("■レンタル申請の否認を申請者へ送信しました。");
                 out.println("<br>");

@@ -63,22 +63,39 @@ body {
 	border-radius: 10px;
 	font-family: 'Noto Sans JP', sans-serif;
 }
-
 .btn-square:hover {
 	border-bottom-color: transparent;
 	transform: translateY(0.1em);
 }
+
+@media screen and (max-width: 1024px) {
+	/* 1024px以下に適用されるCSS（タブレット用） */
+	.rental {
+		left: 47%;
+		top: 30%;
+		width: 500px;
+		font-size: 17px;
+	}
+
+@media screen and (max-width: 480px) {
+	/* 480px以下に適用されるCSS（スマホ用） */
+	.rental {
+		left: 44%;
+		top: 40%;
+		width: 200px;
+		font-size: 12px;
+	}
 </style>
 </head>
 <body>
 	<button class="btn-square" onclick="location.href='BookHome.jsp'">閲覧用書籍一覧</button>
-	<!-- 	選択された書籍のISBNを取得 -->
+	<!-- 	選択された書籍のtitleを取得 -->
 	<%
-		String isbn = request.getParameter("isbn");
-		session.setAttribute("isbn", isbn);
+		String title = request.getParameter("title");
+		session.setAttribute("title", title);
 	%>
 
-	<!--	取得した書籍のISBNを引数として、ISBNと一致する書籍名を取得する。 -->
+	<!--	取得した書籍のtitleを引数として、一致する書籍情報を取得する。 -->
 	<div class="rental">
 
 		<!-- 	今日の日付を取得 -->
@@ -90,7 +107,7 @@ body {
 		%>
 
 		<%
-			List<BookBean> list = obj.Rental(isbn);
+			List<BookBean> list = obj.Rental(title);
 			for (int i = 0; i < list.size(); i++) {
 				obj = list.get(i);
 		%>
@@ -116,18 +133,18 @@ body {
 			</p>
 
 			<p>
-				書籍番号:
-				<%=obj.getIsbn()%></p>
+				書籍番号:<%=obj.getIsbn()%></p>
 			<p>
 				書籍名:<%=obj.getTitle()%></p>
 			<%
 				session.setAttribute("Title", obj.getTitle());
+				session.setAttribute("Isbn", obj.getIsbn());
 			%>
 			<p>レンタル予定日</p>
 			<input required type="date" name="rental" min=<%=display%>> <input
 				type="submit" value="申請ボタン" class="btn-square">
 		</form>
-		申請後に数日経っても承認又は否認のメールが届かない場合は、<br>
+		申請後に承認又は否認のメールが届かない場合は、<br>
 		お手数ですが、総務までご連絡をお願いいたします。
 	</div>
 </body>
